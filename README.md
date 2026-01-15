@@ -9,7 +9,7 @@ O projeto roda 100% no front-end e gera um arquivo ZIP com os arquivos renomeado
 ## Demonstração
 
 🔗 Demo online (GitHub Pages):  
-(link será adicionado)
+<https://rory-mendez.github.io/renomeador-arquivos/>
 
 ---
 
