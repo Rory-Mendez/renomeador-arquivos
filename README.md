@@ -1,32 +1,40 @@
 # Renomeador de Arquivos em Lote
 
-Aplicação web simples para renomear múltiplos arquivos de uma vez, diretamente no navegador, utilizando HTML, CSS e JavaScript.
+Aplicação web para renomear múltiplos arquivos diretamente no navegador, seguindo regras específicas de padronização.
 
-O projeto roda 100% no front-end e gera arquivos renomeados seguindo uma regra fixa.
+O projeto roda 100% no front-end, sem necessidade de backend.
 
 ---
 
-## Objetivo
+## Contexto
 
-Automatizar a renomeação de arquivos exigida por um processo interno da empresa, evitando alto tempo de trabalho,erros manuais e retrabalho.
-
-Esta é a **primeira versão funcional** do projeto.
+Após mudanças nas regras de negócio da empresa, a lógica de renomeação precisou ser ajustada.  
+Esta versão corrige a regra principal do projeto e remove dependências que deixaram de ser necessárias.
 
 ---
 
 ## Funcionalidades
 
-- Renomeação de arquivos em lote
-- Regra fixa de nomenclatura
+- Renomeação correta de arquivos em lote
+- Regra de nomenclatura atualizada
 - Download dos arquivos renomeados
+- Interface funcional e direta
+
+---
+
+## Melhorias em relação à v0
+
+- Correção da **ordem de renomeação dos arquivos**
+- Remoção da área de **candidato**, que não é mais exigida
+- Código mais alinhado à regra real da empresa
 
 ---
 
 ## Limitações Conhecidas
 
-- Ordem de renomeação **incorreta** em relação à regra final desejada
-- Interface simples, sem foco em design
-- Presença de área de **candidato**, exigida por uma regra antiga da empresa
+- Suporte a **apenas um proprietário**
+- Interface ainda simples, sem refinamento visual
+- Funcionalidades fixas, sem personalização
 
 ---
 
@@ -40,4 +48,4 @@ Esta é a **primeira versão funcional** do projeto.
 
 ## Observações
 
-Esta versão representa o primeiro passo do projeto: provar que a ideia funciona.
+Esta versão representa a **primeira implementação correta da regra de negócio**, servindo como base para melhorias futuras.

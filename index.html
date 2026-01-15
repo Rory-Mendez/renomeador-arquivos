@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renomeador de Arquivos Condicional (ZIP)</title>
+    <title>Renomeador e Compactador (ZIP)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="styles.css" rel="stylesheet">
 </head>
@@ -29,14 +29,15 @@
                 <option value="PJ_Condomínio">5. PJ Condomínio</option>
             </select>
             
-            <label for="candidato">Candidato:</label>
-            <input autocomplete="off" type="text" id="candidato" required placeholder="Ex: AA, Candidato A">
+            <label for="conjuge">Propriétario:</label>
+            <input autocomplete="off" type="text" id="conjuge" placeholder="Ex: Igor">
+            <!-- (Opcional no nome do arquivo por enquanto. Mantido para reativar depois.) -->
             
             <hr>
             
             <div id="documentosPfUrbano">
                 <h2>📁 Documentos PF - Urbano</h2>
-                <p class="doc-descricao">Selecione o arquivo correspondente. O arquivo será renomeado usando a descrição completa do item.</p>
+                <p class="doc-descrição">Selecione o arquivo correspondente. O arquivo será renomeado usando a descrição completa do item.</p>
                 
                 <table class="doc-table">
                     <thead>
@@ -53,28 +54,28 @@
                             <td><input type="file" id="file_1_1" required></td>
                         </tr>
                         <tr>
-                            <td>1.2</td>
-                            <td data-prefix="1.2.1_Contratos_de_Compra_e_Venda_firmados_anteriormente">1.2.1 Contratos de Compra e Venda firmados anteriormente</td>
+                            <td>1.2.1</td>
+                            <td data-prefix="1.2.1_Contratos_de_Compra_e_Venda_firmados_anteriormente">Contratos de Compra e Venda firmados anteriormente</td>
                             <td><input type="file" id="file_1_2_1"></td>
                         </tr>
                         <tr>
-                            <td>1.2</td>
-                            <td data-prefix="1.2.2_Histórico_de_IPTU">1.2.2 Histórico de IPTU</td>
+                            <td>1.2.2</td>
+                            <td data-prefix="1.2.2_Histórico_de_IPTU">Histórico de IPTU</td>
                             <td><input type="file" id="file_1_2_2"></td>
                         </tr>
                         <tr>
-                            <td>1.2</td>
-                            <td data-prefix="1.2.3_Contas_de_consumo">1.2.3 Contas de consumo</td>
+                            <td>1.2.3</td>
+                            <td data-prefix="1.2.3_Contas_de_consumo">Contas de consumo</td>
                             <td><input type="file" id="file_1_2_3"></td>
                         </tr>
                         <tr>
-                            <td>1.2</td>
-                            <td data-prefix="1.2.4_Declaração_dos_vizinhos">1.2.4 Declaração dos vizinhos</td>
+                            <td>1.2.4</td>
+                            <td data-prefix="1.2.4_Declaração_dos_vizinhos">Declaração dos vizinhos</td>
                             <td><input type="file" id="file_1_2_4"></td>
                         </tr>
                         <tr>
-                            <td>1.2</td>
-                            <td data-prefix="1.2.5_Se_necessário_outros_documentos">1.2.5 Se necessário: outros documentos</td>
+                            <td>1.2.5</td>
+                            <td data-prefix="1.2.5_Se_necessário_outros_documentos">Se necessário: outros documentos</td>
                             <td><input type="file" id="file_1_2_5"></td>
                         </tr>
                         <tr>
