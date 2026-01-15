@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renomeador de Arquivos Condicional (ZIP)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Renomeador e Compactador (ZIP)</h1>
+        
+        <form id="renomearForm">
+            
+            <label for="idOperadora">ID Operadora:</label>
+            <input autocomplete="off" autofocus type="text" id="idOperadora" required placeholder="Ex: 123">
+            
+            <label for="idSite">ID Site:</label>
+            <input autocomplete="off" type="text" id="idSite" required placeholder="Ex: SP001">
+
+            <label for="tipoImovel">Tipo de Imóvel:</label>
+            <select id="tipoImovel" onchange="mostrarCamposEspecificos()" required>
+                <option value="">Selecione o Tipo...</option>
+                <option value="PF_Urbano">1. PF - Urbano</option>
+                <option value="PF_Rural">2. PF - Rural</option>
+                <option value="PJ_Imóvel_Urbano">3. PJ Imóvel Urbano</option>
+                <option value="PJ_Rural">4. PJ Rural</option>
+                <option value="PJ_Condomínio">5. PJ Condomínio</option>
+            </select>
+            
+            <label for="candidato">Candidato:</label>
+            <input autocomplete="off" type="text" id="candidato" required placeholder="Ex: AA, Candidato A">
+            
+            <hr>
+            
+            <div id="documentosPfUrbano">
+                <h2>📁 Documentos PF - Urbano</h2>
+                <p class="doc-descricao">Selecione o arquivo correspondente. O arquivo será renomeado usando a descrição completa do item.</p>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Descrição Completa</th>
+                            <th>Arquivo Original</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1.1</td>
+                            <td data-prefix="1.1_Cópia_da_Certidão_de_Inteiro_Teor_de_Matrícula_Atualizada_e_da_Certidão_Negativa_de_Ônus_Reais">Copia da Certidão de Inteiro Teor de Matricula Atualizada e da Certidão Negativa de Ônus Reais</td>
+                            <td><input type="file" id="file_1_1" required></td>
+                        </tr>
+                        <tr>
+                            <td>1.2</td>
+                            <td data-prefix="1.2.1_Contratos_de_Compra_e_Venda_firmados_anteriormente">1.2.1 Contratos de Compra e Venda firmados anteriormente</td>
+                            <td><input type="file" id="file_1_2_1"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2</td>
+                            <td data-prefix="1.2.2_Histórico_de_IPTU">1.2.2 Histórico de IPTU</td>
+                            <td><input type="file" id="file_1_2_2"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2</td>
+                            <td data-prefix="1.2.3_Contas_de_consumo">1.2.3 Contas de consumo</td>
+                            <td><input type="file" id="file_1_2_3"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2</td>
+                            <td data-prefix="1.2.4_Declaração_dos_vizinhos">1.2.4 Declaração dos vizinhos</td>
+                            <td><input type="file" id="file_1_2_4"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2</td>
+                            <td data-prefix="1.2.5_Se_necessário_outros_documentos">1.2.5 Se necessário: outros documentos</td>
+                            <td><input type="file" id="file_1_2_5"></td>
+                        </tr>
+                        <tr>
+                            <td>1.3</td>
+                            <td data-prefix="1.3_Certidão_de_Inexistência_de_Matrícula_expedida_pelo_Cartório_competente">Certidão de Inexistência de Matrícula expedida pelo Cartório competente</td>
+                            <td><input type="file" id="file_1_3"></td>
+                        </tr>
+                        <tr>
+                            <td>1.4</td>
+                            <td data-prefix="1.4_Comprovante_de_IPTU_atualizado">Comprovante de IPTU atualizado</td>
+                            <td><input type="file" id="file_1_4" required></td>
+                        </tr>
+                        <tr>
+                            <td>1.5</td>
+                            <td data-prefix="1.5_Certidão_Negativa_de_IPTU">Certidão Negativa de IPTU</td>
+                            <td><input type="file" id="file_1_5" required></td>
+                        </tr>
+			<tr>
+                            <td>2.1</td>
+                            <td data-prefix="2.1 Copia do documento de identificação pessoal com foro legalmente aceitos">Copia do documento de identificação pessoal com foro legalmente aceitos</td>
+                            <td><input type="file" id="file_2_1" required></td>
+                        </tr>
+			<tr>
+                            <td>2.2</td>
+                            <td data-prefix="2.2 2.2 Comprovante de endereço">Comprovante de endereço</td>
+                            <td><input type="file" id="file_2_2" required></td>
+                        </tr>
+			<tr>
+                            <td>2.3</td>
+                            <td data-prefix="2.3 Comprovante bancário">Comprovante bancário</td>
+                            <td><input type="file" id="file_2_3" required></td>
+                        </tr>
+			<tr>
+                            <td>2.4</td>
+                            <td data-prefix="2.4 Certidão de Casamento e/ou Nascimento Atualizadas">Certidão de Casamento e/ou Nascimento Atualizadas</td>
+                            <td><input type="file" id="file_2_4" required></td>
+                        </tr>
+			<tr>
+                            <td>2.5</td>
+                            <td data-prefix="2.5 Certidão Negativa de Débitos Tributários Municipais">Certidão Negativa de Débitos Tributários Municipais</td>
+                            <td><input type="file" id="file_2_5" required></td>
+                        </tr>
+			<tr>
+                            <td>2.6</td>
+                            <td data-prefix="2.6 Certidão Negativa de Débitos Tributários Estaduais">Certidão Negativa de Débitos Tributários Estaduais</td>
+                            <td><input type="file" id="file_2_6" required></td>
+                        </tr>
+			<tr>
+                            <td>2.7</td>
+                            <td data-prefix="2.7 Certidão Negativa de Débitos Tributários Federais">Certidão Negativa de Débitos Tributários Federais</td>
+                            <td><input type="file" id="file_2_7" required></td>
+                        </tr>
+			<tr>
+                            <td>2.8</td>
+                            <td data-prefix="2.8 Certidão de Distribuição de Ações Criminais, na jurisdição Estadual">Certidão de Distribuição de Ações Criminais, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_8" required></td>
+                        </tr>
+			<tr>
+                            <td>2.9</td>
+                            <td data-prefix="2.9 Certidão de Distribuição de Ações Cíveis, na jurisdição Estadual">Certidão de Distribuição de Ações Cíveis, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_9" required></td>
+                        </tr>
+			<tr>
+                            <td>2.10</td>
+                            <td data-prefix="2.10 Certidão de Distribuição de Ações Cíveis, na jurisdição Federal">Certidão de Distribuição de Ações Cíveis, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_10" required></td>
+                        </tr>
+			<tr>
+                            <td>2.11</td>
+                            <td data-prefix="2.11 Certidão de Distribuição de Ações Criminais, na jurisdição Federal">Certidão de Distribuição de Ações Criminais, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_11" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="arquivoGeralDiv">
+                <label for="arquivoInputGeral">Selecione o Arquivo (Renomeação Padrão):</label>
+                <input type="file" id="arquivoInputGeral">
+            </div>
+
+            <div class="loading-message" id="loading">Criando e compactando o arquivo ZIP... Aguarde.</div>
+
+            <button type="button" id="downloadButton" onclick="iniciarRenomeacao()">Criar Arquivo ZIP com Documentos Renomeados</button>
+        </form>
+    </div>
+
+    <script src="scripts.js"></script>
+
+</body>
+</html>
