@@ -2,7 +2,7 @@
 // Utilitários de texto / nomes
 // ==============================
 
-// Para IDs (operadora/site): mantém só letras/números e troca espaços por underline (IDs normalmente não têm espaço)
+// Para IDs (operadora/site): mantém só letras/números e troca espaços por underline
 function normalizeId(text) {
     const normalized = (text ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     return normalized.replace(/[^a-zA-Z0-9]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
@@ -11,75 +11,24 @@ function normalizeId(text) {
 // Para títulos/descrições de arquivo: mantém ESPAÇOS e remove caracteres problemáticos do Windows
 function sanitizeTitle(text) {
     const normalized = (text ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    // Remove caracteres inválidos em nomes de arquivo no Windows: <>:"/\|?* e também controles
     return normalized
         .replace(/[<>:"/\\|?*\x00-\x1F]/g, '')
         .replace(/\s+/g, ' ')
         .trim();
 }
 
-// Separa nome e extensão (pega a última ocorrência de ".")
+// Separa nome e extensão
 function splitNameAndExt(filename) {
     const name = filename ?? '';
     const lastDot = name.lastIndexOf('.');
-    if (lastDot <= 0) return { base: name, ext: '' }; // sem extensão ou arquivo tipo ".env"
+    if (lastDot <= 0) return { base: name, ext: '' };
     return { base: name.slice(0, lastDot), ext: name.slice(lastDot) };
 }
 
 // ==============================
-// UI: mostra/esconde campos
+// Config (nomes fixos e itens com proprietário)
 // ==============================
-function mostrarCamposEspecificos() {
-    const tipoImovel = document.getElementById('tipoImovel').value;
-    const docDiv = document.getElementById('documentosPfUrbano');
-    const geralDiv = document.getElementById('arquivoGeralDiv');
-    const arquivoGeralInput = document.getElementById('arquivoInputGeral');
 
-    if (tipoImovel === 'PF_Urbano') {
-        docDiv.style.display = 'block';
-        geralDiv.style.display = 'none';
-        arquivoGeralInput.removeAttribute('required');
-    } else if (tipoImovel) {
-        docDiv.style.display = 'none';
-        geralDiv.style.display = 'block';
-        arquivoGeralInput.setAttribute('required', 'required');
-    } else {
-        docDiv.style.display = 'none';
-        geralDiv.style.display = 'none';
-    }
-}
-
-// ==============================
-// Fluxo principal (ZIP)
-// ==============================
-async function iniciarRenomeacao() {
-    const loading = document.getElementById('loading');
-    const downloadButton = document.getElementById('downloadButton');
-
-    downloadButton.disabled = true;
-    loading.style.display = 'block';
-
-    const idOperadora = document.getElementById('idOperadora').value.trim();
-    const idSite = document.getElementById('idSite').value.trim();
-    const tipoImovel = document.getElementById('tipoImovel').value.trim();
-
-    // Campo "conjuge" (mantido no HTML), mas NÃO é mais obrigatório pro nome.
-    const conjuge = document.getElementById('conjuge')?.value?.trim() ?? '';
-
-    if (!idOperadora || !idSite || !tipoImovel) {
-        alert('Por favor, preencha: ID Operadora, ID Site e Tipo de Imóvel.');
-        downloadButton.disabled = false;
-        loading.style.display = 'none';
-        return;
-    }
-
-    const operadoraFmt = normalizeId(idOperadora);
-    const siteFmt = normalizeId(idSite);
-    const conjugeFmt = sanitizeTitle(conjuge); // mantém espaços, remove caracteres ruins
-
-    const zip = new JSZip();
-
-    // Mapa: índice -> rótulo fixo do documento
 const labelByIndex = {
     "1.1": "Matrícula",
     "1.2.1": "Compra e Venda",
@@ -103,84 +52,355 @@ const labelByIndex = {
     "2.11": "Certidão Crim Federal"
 };
 
-// Índices que aceitam (e devem usar) _Cônjuge quando preenchido
-const indicesComConjuge = new Set([
+// Itens que (quando "Proprietário? = Sim") serão duplicados em 1 e 2
+const indicesComProprietario = new Set([
     "2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11"
 ]);
 
+// ==============================
+// UI: mostra/esconde campos
+// ==============================
+
+let pfUrbanoTbodyOriginalHTML = "";
+
+function mostrarCamposEspecificos() {
+    const tipoImovel = document.getElementById('tipoImovel').value;
+    const docDiv = document.getElementById('documentosPfUrbano');
+    const geralDiv = document.getElementById('arquivoGeralDiv');
+    const arquivoGeralInput = document.getElementById('arquivoInputGeral');
 
     if (tipoImovel === 'PF_Urbano') {
-        // Fluxo: múltiplos arquivos na tabela
-        const prefixCells = document.querySelectorAll('#documentosPfUrbano .doc-table td[data-prefix]');
-
-        const arquivosParaRenomear = [];
-
-        prefixCells.forEach(cell => {
-            const fileInput = cell.nextElementSibling?.querySelector('input[type="file"]');
-            if (!fileInput || fileInput.files.length === 0) return;
-
-            const arquivo = fileInput.files[0];
-            const { base, ext } = splitNameAndExt(arquivo.name);
-
-            // ✅ índice vem da 1ª coluna (td anterior)
-            const indexRaw = (cell.previousElementSibling?.textContent ?? '').trim();
-
-            // ✅ label vem do mapa; se não existir, cai no texto da célula (descrição) ou no nome do arquivo
-            const label = labelByIndex[indexRaw] ?? sanitizeTitle((cell.textContent ?? '').trim() || base);
-
-            // ✅ cônjuge opcional por índice
-            const sufixoConjuge =
-                (indicesComConjuge.has(indexRaw) && conjugeFmt) ? `_${conjugeFmt}` : "";
-
-            // ✅ padrão final
-            const novoNome = `${indexRaw} ${operadoraFmt}_${siteFmt}_${label}${sufixoConjuge}${ext}`;
-
-            arquivosParaRenomear.push({ novoNome, arquivo });
-        });
-
-
-        if (arquivosParaRenomear.length === 0) {
-            alert('Nenhum arquivo foi selecionado. Anexe pelo menos um documento para gerar o ZIP.');
-            downloadButton.disabled = false;
-            loading.style.display = 'none';
-            return;
-        }
-
-        arquivosParaRenomear.forEach(item => zip.file(item.novoNome, item.arquivo));
-
-        // ZIP sem candidato (mas o campo continua no HTML)
-        const nomeZip = `${tipoImovel}_${operadoraFmt}_${siteFmt}_Documentos.zip`;
-        const content = await zip.generateAsync({ type: 'blob' });
-        dispararDownload(content, nomeZip);
-
+        docDiv.style.display = 'block';
+        geralDiv.style.display = 'none';
+        arquivoGeralInput.removeAttribute('required');
+    } else if (tipoImovel) {
+        docDiv.style.display = 'none';
+        geralDiv.style.display = 'block';
+        arquivoGeralInput.setAttribute('required', 'required');
     } else {
-        // Fluxo: arquivo único
-        const arquivoInput = document.getElementById('arquivoInputGeral');
-        if (arquivoInput.files.length === 0) {
-            alert('Por favor, selecione um arquivo no campo de Arquivo Geral.');
-            downloadButton.disabled = false;
-            loading.style.display = 'none';
-            return;
-        }
-
-        const arquivo = arquivoInput.files[0];
-        const { base, ext } = splitNameAndExt(arquivo.name);
-
-        const tipoFmt = sanitizeTitle(tipoImovel);
-        const baseFmt = sanitizeTitle(base);
-
-        const novoNomeCompleto = `${tipoFmt}_${operadoraFmt}_${siteFmt}_${baseFmt}${ext}`;
-
-        zip.file(novoNomeCompleto, arquivo);
-
-        const nomeZip = `${tipoImovel}_${operadoraFmt}_${siteFmt}.zip`;
-        const content = await zip.generateAsync({ type: 'blob' });
-        dispararDownload(content, nomeZip);
+        docDiv.style.display = 'none';
+        geralDiv.style.display = 'none';
     }
 
-    downloadButton.disabled = false;
-    loading.style.display = 'none';
+    // Quando muda o tipo, a UI de proprietário pode precisar ser re-aplicada
+    atualizarUIProprietario();
 }
+
+function atualizarUIProprietario() {
+    const tipoImovel = document.getElementById('tipoImovel')?.value ?? '';
+    const raw = document.getElementById('temProprietario')?.value;
+    const temProprietario = raw && raw.trim() ? raw : '1';
+
+    const fields = document.getElementById('proprietarioFields');
+    const input1 = document.getElementById('proprietario1');
+    const input2 = document.getElementById('proprietario2');
+
+    const tbody = document.getElementById('pfUrbanoTbody');
+    if (!tbody) return;
+
+    const deveMostrarCampos = (temProprietario === '2' && tipoImovel === 'PF_Urbano');
+
+    // Campos de nome: obrigatórios quando Sim + PF_Urbano
+    fields.style.display = deveMostrarCampos ? 'block' : 'none';
+    if (deveMostrarCampos) {
+        input1.setAttribute('required', 'required');
+        input2.setAttribute('required', 'required');
+    } else {
+        input1.removeAttribute('required');
+        input2.removeAttribute('required');
+    }
+
+    // Duplicar / restaurar linhas só quando PF Urbano
+    if (tipoImovel !== 'PF_Urbano') return;
+
+    if (temProprietario === '2') {
+        // Reconstruir o tbody duplicando os itens que têm proprietário
+        const temp = document.createElement('tbody');
+        temp.innerHTML = pfUrbanoTbodyOriginalHTML;
+
+        const novoTbody = document.createElement('tbody');
+        novoTbody.id = "pfUrbanoTbody";
+
+        const nomeProp1 = input1.value.trim();
+        const nomeProp2 = input2.value.trim();
+
+        const label1 = nomeProp1 || "Proprietário 1";
+        const label2 = nomeProp2 || "Proprietário 2";
+
+        Array.from(temp.querySelectorAll('tr')).forEach((row) => {
+            const tds = row.querySelectorAll('td');
+            if (tds.length < 3) return;
+
+            const index = (tds[0].textContent ?? '').trim();
+            const descTd = tds[1];
+            const fileTd = tds[2];
+            const input = fileTd.querySelector('input[type="file"]');
+
+            // Se não tiver input de arquivo, só copia
+            if (!input) {
+                novoTbody.appendChild(row);
+                return;
+            }
+
+            // Se esse índice não é “2 proprietários”, mantém a linha normal
+            if (!indicesComProprietario.has(index)) {
+                novoTbody.appendChild(row);
+                return;
+            }
+
+            // Se é “com 2 proprietários”, cria duas linhas: 1 e 2
+            const row1 = row.cloneNode(true);
+            const row2 = row.cloneNode(true);
+
+            // marca as variantes (isso é o que faz o querySelector do atualizarNomes funcionar)
+            row1.dataset.proprietarioVariant = "1";
+            row2.dataset.proprietarioVariant = "2";
+
+            // docTipo (para o item 2.1): começa com CNH
+            row1.dataset.docTipo = row.dataset.docTipo || "CNH";
+            row2.dataset.docTipo = row.dataset.docTipo || "CNH";
+
+            // pega o TD da descrição (2ª coluna) em cada clone
+            const desc1 = row1.querySelector("td:nth-child(2)");
+            const desc2 = row2.querySelector("td:nth-child(2)");
+
+            // pega os inputs de arquivo dentro de cada linha clonada e dá IDs únicos
+            const file1 = row1.querySelector('input[type="file"]');
+            const file2 = row2.querySelector('input[type="file"]');
+
+            if (file1) file1.id = `${input.id}_1`;
+            if (file2) file2.id = `${input.id}_2`;
+
+            // baseDesc seguro:
+            // - se existir .base-desc (só no 2.1), usa ele
+            // - se não existir, usa o texto do TD mesmo
+            const base =
+                descTd.querySelector(".base-desc")?.textContent?.trim()
+                ?? descTd.textContent.trim();
+
+            // salva a baseDesc no dataset das linhas clonadas (pra não “acumular parênteses” depois)
+            row1.dataset.baseDesc = base;
+            row2.dataset.baseDesc = base;
+
+            // Atualiza só o owner-label se ele existir (preserva botões CNH/RG do 2.1)
+            const owner1 = desc1?.querySelector(".owner-label");
+            const owner2 = desc2?.querySelector(".owner-label");
+
+            if (owner1) owner1.textContent = `(${label1})`;
+            if (owner2) owner2.textContent = `(${label2})`;
+
+            novoTbody.appendChild(row1);
+            novoTbody.appendChild(row2);
+        });
+
+        tbody.replaceWith(novoTbody);
+
+        atualizarNomesProprietarios();
+    } else {
+        // Restaurar tbody original (sem duplicação)
+        const original = document.createElement("tbody");
+        original.id = "pfUrbanoTbody";
+        original.innerHTML = pfUrbanoTbodyOriginalHTML;
+        tbody.replaceWith(original);
+    }
+}
+
+function removerParentesesDoFinal(text) {
+    const idx = text.lastIndexOf(" (");
+    if (idx === -1) return text;
+    return text.slice(0, idx);
+}
+
+function atualizarNomesProprietarios() {
+    const tipoImovel = document.getElementById('tipoImovel')?.value ?? '';
+    const raw = document.getElementById('temProprietario')?.value;
+    const temProprietario = raw && raw.trim() ? raw : '1';
+
+    if (tipoImovel === 'PF_Urbano' && temProprietario === '2') {
+        const input1 = document.getElementById('proprietario1').value.trim();
+        const input2 = document.getElementById('proprietario2').value.trim();
+
+        const label1 = input1 || "Proprietário 1";
+        const label2 = input2 || "Proprietário 2";
+
+        document.querySelectorAll('#pfUrbanoTbody tr[data-proprietario-variant]').forEach((row) => {
+            const variant = row.dataset.proprietarioVariant;
+
+            const descTd = row.querySelector('td:nth-child(2)');
+            if (!descTd) return;
+
+            // Se existir owner-label, atualiza só ele (preserva botões CNH/RG)
+            const owner = descTd.querySelector('.owner-label');
+            if (owner) {
+                owner.textContent = variant === "1" ? `(${label1})` : `(${label2})`;
+                return;
+            }
+
+            // Caso normal (sem HTML extra), pode atualizar texto inteiro
+            const textoAtual = row.dataset.baseDesc || descTd.textContent;
+            const baseDesc = removerParentesesDoFinal(textoAtual);
+
+            descTd.textContent = `${baseDesc} (${variant === "1" ? label1 : label2})`;
+        });
+
+    }
+}
+
+function configurarBotoesDocTipo() {
+    document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".btn-doc");
+        if (!btn) return;
+
+        const row = btn.closest("tr");
+        if (!row) return;
+
+        const tipo = btn.dataset.tipo; // "CNH" ou "RG"
+        row.dataset.docTipo = tipo;
+
+    // opcional: deixar visual qual está ativo
+        row.querySelectorAll(".btn-doc").forEach(b => b.classList.toggle("active", b === btn));
+    });
+}
+
+
+// ==============================
+// Fluxo principal (ZIP)
+// ==============================
+
+async function iniciarRenomeacao() {
+    const loading = document.getElementById('loading');
+    const downloadButton = document.getElementById('downloadButton');
+    const form = document.getElementById("renomearForm");
+    if (form && !form.checkValidity()) {
+        if (typeof form.reportValidity === 'function') form.reportValidity();
+        return;
+    }   
+
+    downloadButton.disabled = true;
+    loading.style.display = 'block';
+
+    try {
+        const idOperadora = document.getElementById('idOperadora').value.trim();
+        const idSite = document.getElementById('idSite').value.trim();
+        const tipoImovel = document.getElementById('tipoImovel').value.trim();
+
+        const temProprietario = document.getElementById('temProprietario')?.value ?? '';
+        const proprietario1 = document.getElementById('proprietario1')?.value?.trim() ?? '';
+        const proprietario2 = document.getElementById('proprietario2')?.value?.trim() ?? '';
+
+        if (!idOperadora || !idSite || !tipoImovel) {
+            alert('Por favor, preencha: ID Operadora, ID Site e Tipo de Imóvel.');
+            return;
+        }
+
+        // Se marcar "Sim" em PF Urbano, os dois nomes são obrigatórios
+        if (tipoImovel === 'PF_Urbano' && temProprietario === '2') {
+            if (!proprietario1 || !proprietario2) {
+                alert('Você marcou "Proprietário? = Sim". Preencha obrigatoriamente Proprietário 1 e Proprietário 2.');
+                return;
+            }
+        }
+
+        const operadoraFmt = normalizeId(idOperadora);
+        const siteFmt = normalizeId(idSite);
+
+        const proprietario1Fmt = sanitizeTitle(proprietario1);
+        const proprietario2Fmt = sanitizeTitle(proprietario2);
+
+        const zip = new JSZip();
+
+        if (tipoImovel === 'PF_Urbano') {
+            const tbody = document.getElementById('pfUrbanoTbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            // Agora gerar arquivos (0/1/2 por índice dependendo do que foi anexado)
+            const arquivosParaRenomear = [];
+
+            rows.forEach((row) => {
+                const tds = row.querySelectorAll('td');
+                if (tds.length < 3) return;
+
+                const indexRaw = (tds[0].textContent ?? '').trim();
+                const input = row.querySelector('input[type="file"]');
+                if (!input || !input.files || input.files.length === 0) return;
+
+                const arquivo = input.files[0];
+                const { base, ext } = splitNameAndExt(arquivo.name);
+
+                let label = labelByIndex[indexRaw] ?? sanitizeTitle(base);
+
+                if (indexRaw === "2.1") {
+                    label = row.dataset.docTipo || "CNH";
+                }
+
+                const variant = row.dataset.proprietarioVariant || ""; // "1" | "2" | ""
+
+                let sufixoProprietario = "";
+                if (tipoImovel === 'PF_Urbano' && temProprietario === '2' && indicesComProprietario.has(indexRaw) && variant) {
+                    const nomeProprietario = (variant === "1") ? proprietario1Fmt : proprietario2Fmt;
+                    sufixoProprietario = nomeProprietario ? `_${nomeProprietario}` : "";
+                }
+
+                const novoNome = `${indexRaw} ${operadoraFmt}_${siteFmt}_${label}${sufixoProprietario}${ext}`;
+                arquivosParaRenomear.push({ novoNome, arquivo });
+            });
+
+            if (arquivosParaRenomear.length === 0) {
+                alert('Nenhum arquivo foi selecionado. Anexe pelo menos um documento para gerar o ZIP.');
+                return;
+            }
+
+            arquivosParaRenomear.forEach(item => zip.file(item.novoNome, item.arquivo));
+
+            const nomeZip = `${tipoImovel}_${operadoraFmt}_${siteFmt}_Documentos.zip`;
+            const content = await zip.generateAsync({ type: 'blob' });
+            dispararDownload(content, nomeZip);
+            limparFormulario();
+
+        } else {
+            // Fluxo: arquivo único (sem proprietário por enquanto)
+            const arquivoInput = document.getElementById('arquivoInputGeral');
+            if (!arquivoInput.files || arquivoInput.files.length === 0) {
+                alert('Por favor, selecione um arquivo no campo de Arquivo Geral.');
+                return;
+            }
+
+            const arquivo = arquivoInput.files[0];
+            const { base, ext } = splitNameAndExt(arquivo.name);
+
+            const tipoFmt = sanitizeTitle(tipoImovel);
+            const baseFmt = sanitizeTitle(base);
+
+            const novoNomeCompleto = `${tipoFmt}_${operadoraFmt}_${siteFmt}_${baseFmt}${ext}`;
+
+            zip.file(novoNomeCompleto, arquivo);
+
+            const nomeZip = `${tipoImovel}_${operadoraFmt}_${siteFmt}.zip`;
+            const content = await zip.generateAsync({ type: 'blob' });
+            dispararDownload(content, nomeZip);
+            limparFormulario();
+        }
+
+    } finally {
+        downloadButton.disabled = false;
+        loading.style.display = 'none';
+    }
+}
+
+// Função que limpa os anexos do input de arquivo
+function limparFormulario() {
+    console.log("cliquei em limparFormulario");
+    const files = document.querySelectorAll('#renomearForm input[type="file"]');
+    console.log("ACHOU FILE INPUTS:", files.length);
+
+    files.forEach((i, idx) => {
+        console.log(idx, i.id, i.files?.length);
+        i.value = "";
+        console.log("depois:", i.files?.length);
+    });
+}
+
+// Função que dispara o download do Blob com o nome especificado
 
 function dispararDownload(blob, filename) {
     const urlObjeto = URL.createObjectURL(blob);
@@ -193,6 +413,38 @@ function dispararDownload(blob, filename) {
     URL.revokeObjectURL(urlObjeto);
 }
 
+// ==============================
+// Inicialização da página
+// ==============================
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Salva o tbody “original” (sem duplicação) para restaurar quando temProprietario = 1
+    const tbody = document.getElementById('pfUrbanoTbody');
+    if (tbody) pfUrbanoTbodyOriginalHTML = tbody.innerHTML;
+
     mostrarCamposEspecificos();
+    atualizarUIProprietario();
+    configurarBotoesDocTipo();
+    limparFormulario();
+
+
+    const btnLimpar = document.getElementById("limparFormulario");
+    if (btnLimpar) btnLimpar.addEventListener("click", limparFormulario);
+
+
+    document.querySelectorAll('input[type="file"]').forEach(inp => {
+        inp.addEventListener('change', () => {
+            if (inp.files && inp.files[0]) inp.title = inp.files[0].name;
+        });
+});
+
+
+    // Eventos para atualizar nomes dos proprietários ao digitar
+
+    const input1 = document.getElementById('proprietario1');
+    const input2 = document.getElementById('proprietario2');
+
+    if (input1) input1.addEventListener('input', atualizarNomesProprietarios);
+    if (input2) input2.addEventListener('input', atualizarNomesProprietarios);
+
 });

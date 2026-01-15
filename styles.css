@@ -1,103 +1,377 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f4f4f9;
-}
-.container {
-    max-width: 800px;
-    margin: auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-h1 {
-    color: #333;
-    text-align: center;
-    margin-bottom: 30px;
-}
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-}
-input[type="text"], select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; 
-}
-hr {
-    border: 0;
-    border-top: 1px solid #eee;
-    margin: 24px 0;
-}
-button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background-color: #dc3545; /* Cor alterada para indicar download de arquivo */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
-}
-button:hover {
-    background-color: #c82333;
+:root{
+  --bg1: #0b1020;
+  --bg2: #0f1530;
+
+  --card: rgba(255,255,255,0.08);
+  --card2: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.14);
+
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.72);
+
+  --primary: #7c3aed;   /* roxo */
+  --primary2:#a855f7;   /* roxo claro */
+  --blue: #3b82f6;
+
+  --danger:#ef4444;
+  --danger2:#fb7185;
+
+  --shadow: 0 18px 60px rgba(0,0,0,0.45);
+  --shadow2: 0 10px 30px rgba(0,0,0,0.35);
+
+  --radius: 16px;
 }
 
-/* Estilos da Tabela de Documentos */
-#documentosPfUrbano {
-    border: 1px solid #007bff;
-    padding: 15px;
-    background-color: #eaf3ff;
-    border-radius: 6px;
-    margin-top: 20px;
-    display: none; 
-}
-/* Estilo para o campo de arquivo único */
-#arquivoGeralDiv {
-    border: 1px solid #f0ad4e;
-    padding: 15px;
-    background-color: #fff8e6;
-    border-radius: 6px;
-    margin-top: 20px;
-    display: none; 
+*{ box-sizing: border-box; }
+
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  margin: 20px;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 700px at 10% 10%, rgba(124,58,237,0.35), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(59,130,246,0.25), transparent 55%),
+    radial-gradient(700px 500px at 50% 90%, rgba(168,85,247,0.20), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-.doc-table {
-    width: 100%;
-    border-collapse: collapse;
+/* =========================
+   CONTAINER / CABEÇALHO
+   ========================= */
+
+.container{
+  max-width: 1100px; /* um pouco maior pra respirar */
+  margin: auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+  border: 1px solid var(--border);
+  padding: 28px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
 }
-.doc-table th, .doc-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
+
+h1{
+  text-align: center;
+  margin: 6px 0 22px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: var(--text);
 }
-.doc-table th {
-    background-color: #007bff;
-    color: white;
+
+hr{
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  margin: 22px 0;
 }
-.doc-table input[type="file"] {
-    margin: 0;
-    padding: 5px;
-    border: none;
-    width: 90%;
+
+/* =========================
+   FORM / INPUTS
+   ========================= */
+
+label{
+  display: block;
+  margin: 10px 0 8px;
+  font-weight: 650;
+  color: rgba(255,255,255,0.82);
 }
-.doc-descrição {
-    font-size: 0.9em;
-    color: #666;
+
+#proprietarioFields label{
+  font-weight: 500; 
+  color: rgba(255,255,255,0.78);
 }
-.loading-message {
+
+input[type="text"], select{
+  width: 100%;
+  padding: 11px 12px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 12px;
+  background: rgba(10, 14, 28, 0.45);
+  color: var(--text);
+  outline: none;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+input[type="text"]::placeholder{
+  color: rgba(255,255,255,0.45);
+}
+
+input[type="text"]:focus, select:focus{
+  border-color: rgba(168,85,247,0.65);
+  box-shadow: 0 0 0 4px rgba(168,85,247,0.20);
+}
+
+select{
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.65) 50%),
+    linear-gradient(135deg, rgba(255,255,255,0.65) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 4px),
+    calc(100% - 12px) calc(50% - 4px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 38px;
+}
+
+/* =========================
+   BOTÕES GERAIS (download / etc.)
+   ========================= */
+
+button{
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 16px;
+  color: #fff;
+  background: linear-gradient(90deg, var(--danger), var(--danger2));
+  box-shadow: var(--shadow2);
+  transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+}
+
+button:hover{
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.40);
+}
+
+button:active{
+  transform: translateY(0px);
+}
+
+#limparFormulario{
+  width: 26%;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#limparFormulario:hover{
+  background: rgba(255,255,255,0.14);
+  transform: translateY(-1px);
+}
+
+/* =========================
+   SEÇÕES (PF Urbano / Arquivo Geral)
+   ========================= */
+
+#documentosPfUrbano{
+  border: 1px solid rgba(168,85,247,0.45);
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(124,58,237,0.12), rgba(255,255,255,0.06));
+  border-radius: 14px;
+  margin-top: 16px;
+  display: none;
+}
+
+#arquivoGeralDiv{
+  border: 1px solid rgba(59,130,246,0.35);
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(59,130,246,0.10), rgba(255,255,255,0.05));
+  border-radius: 14px;
+  margin-top: 16px;
+  display: none;
+}
+
+.doc-descrição{
+  font-size: 0.92em;
+  color: rgba(255,255,255,0.70);
+  margin: 8px 0 14px;
+}
+
+/* =========================
+   TABELA
+   ========================= */
+
+.doc-table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.doc-table thead th{
+  background: linear-gradient(90deg, rgba(124,58,237,0.85), rgba(49, 39, 180, 0.75));
+  color: #fff;
+  padding: 12px 12px;
+  text-align: left;
+  font-weight: 750;
+  border-bottom: 1px solid rgba(255,255,255,0.16);
+}
+
+.doc-table thead th:first-child{ border-top-left-radius: 14px; }
+.doc-table thead th:last-child{ border-top-right-radius: 14px; }
+
+.doc-table td{
+  padding: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  background: rgba(10, 14, 28, 0.28);
+  vertical-align: middle;
+}
+
+
+.doc-table tbody tr:nth-child(even) td{
+  background: rgba(10, 14, 28, 0.20);
+}
+
+
+.doc-table th:nth-child(1),
+.doc-table td:nth-child(1){
+  width: 70px;
+  white-space: nowrap;
+}
+
+.doc-table th:nth-child(3),
+.doc-table td:nth-child(3){
+  width: 38%;
+}
+
+.doc-table td:nth-child(2){
+  line-height: 1.25;
+}
+
+/* =========================
+   INPUT FILE
+   ========================= */
+
+.doc-table input[type="file"]{
+  width: 100%;
+  max-width: 100%;
+  font-size: 13px;
+  margin: 0;
+  padding: 7px 9px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(10, 14, 28, 0.45);
+  color: rgba(255,255,255,0.85);
+  box-shadow: none;
+}
+
+.doc-table input[type="file"]::file-selector-button{
+  margin-right: 10px;
+  border: 1px solid rgba(168,85,247,0.40);
+  background: linear-gradient(90deg, rgba(124,58,237,0.75), rgba(168,85,247,0.65));
+  color: #fff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: filter .12s ease, transform .12s ease;
+}
+
+.doc-table input[type="file"]::file-selector-button:hover{
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.doc-table input[type="file"]:focus{
+  outline: none;
+  border-color: rgba(168,85,247,0.70);
+  box-shadow: 0 0 0 4px rgba(168,85,247,0.18);
+}
+
+/* =========================
+   TOGGLES CNH / RG (PILULAS)
+   ========================= */
+
+.owner-label,
+.doc-toggles{
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.base-desc {
+  display: inline;
+  vertical-align: middle;
+}
+
+.owner-label{
+  margin-left: 6px;
+  font-weight: 500;  
+  color: rgba(255,255,255,0.78);
+}
+
+.doc-toggles{
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.doc-toggles .btn-doc{
+    transform: translateY(-5px);
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  height: 26px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.85);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+.doc-toggles .btn-doc.active{
+  background: linear-gradient(90deg, rgba(59,130,246,0.95), rgba(124,58,237,0.85));
+  border-color: rgba(124,58,237,0.60);
+  color: #fff;
+}
+
+.doc-toggles .btn-doc:hover{
+  filter: brightness(1.05);
+}
+
+.doc-toggles .btn-doc:focus{
+    outline: 2px solid rgba(168,85,247,0.35);
+    outline-offset: 2px;
+}
+
+/* =========================
+    LOADING
+   ========================= */
+
+.loading-message{
     text-align: center;
-    padding: 10px;
-    color: #007bff;
+    padding: 10px 12px;
+    margin-top: 12px;
+    color: rgba(255,255,255,0.86);
     display: none;
-    font-weight: bold;
+    font-weight: 650;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(124,58,237,0.14);
+}
+
+/* =========================
+    PEQUENOS AJUSTES RESPONSIVOS
+   ========================= */
+
+@media (max-width: 860px){
+    .container{ max-width: 96%; padding: 20px; }
+    #limparFormulario{ width: 40%; }
+    .doc-table th:nth-child(3),
+    .doc-table td:nth-child(3){ width: 46%; }
+}
+
+@media (max-width: 560px){
+    #limparFormulario{ width: 60%; }
+    .doc-table th:nth-child(1),
+    .doc-table td:nth-child(1){ width: 56px; }
+    .doc-table td{ padding: 10px; }
 }
