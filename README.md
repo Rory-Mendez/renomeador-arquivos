@@ -50,7 +50,7 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 - Remoção da área de candidato
 - Suporte limitado a um proprietário
 
-### v2.0 — Versão estável atual
+### v2.0 — Versão estável
 
 - Interface redesenhada com CSS atualizado
 - Suporte a dois proprietários
@@ -58,12 +58,16 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 - Limpeza automática e manual dos anexos
 - Código mais organizado e melhor experiência de uso
 
+### v2.1 — Versão atual
+
+- Suporte para duas tabelas de renomeação (PF Urbano e PF Rural)
+
 ---
 
 ## Roadmap (Funcionalidades Futuras)
 
 - Implementar as demais tabelas de renomeação  
-  (atualmente apenas uma tabela está funcional)
+  (atualmente apenas duas tabelas estão funcionais)
 - Permitir personalização da regra de renomeação  
   (usuário escolhe ordem e formato do nome final)
 - Converter imagens (`jpg`, `jpeg`, `png`) em PDFs individuais antes da geração do ZIP
@@ -83,3 +87,9 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 ## Observações
 
 Este projeto foi desenvolvido como ferramenta real de uso interno e evoluiu conforme mudanças nas regras de negócio, servindo também como estudo prático de versionamento, organização de código e experiência do usuário.
+
+<p align="center">
+  <img src="assets/screenshots/capa.png" alt="Capa do site" width="47%" style="vertical-align: top; margin-right: 12px;" />
+  <img src="assets/screenshots/tabela.png" alt="Tabela de renomeação" width="45%" style="vertical-align: top;" />
+</p>
+
