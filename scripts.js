@@ -79,7 +79,7 @@ const labelByIndexRural = {
 };
 // Itens que (quando "Proprietário? = Sim") serão duplicados em 1 e 2
 const indicesComProprietario = new Set([
-    "2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11"
+    "2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11", "2.12"
 ]);
 
 // ==============================
