@@ -58,9 +58,14 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 - Limpeza automática e manual dos anexos
 - Código mais organizado e melhor experiência de uso
 
-### v2.1 — Versão atual
+### v2.1 — Adição da tabela de PF Rural
 
 - Suporte para duas tabelas de renomeação (PF Urbano e PF Rural)
+
+### v2.1.1 — Correções pontuais
+
+- Correção de erro do item em HTML
+- Campo de CND IBAMA aceita 2 porprietários
 
 ---
 
@@ -88,8 +93,9 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 
 Este projeto foi desenvolvido como ferramenta real de uso interno e evoluiu conforme mudanças nas regras de negócio, servindo também como estudo prático de versionamento, organização de código e experiência do usuário.
 
+## Screenshots
+
 <p align="center">
   <img src="assets/screenshots/capa.png" alt="Capa do site" width="47%" style="vertical-align: top; margin-right: 12px;" />
   <img src="assets/screenshots/tabela.png" alt="Tabela de renomeação" width="45%" style="vertical-align: top;" />
 </p>
-
