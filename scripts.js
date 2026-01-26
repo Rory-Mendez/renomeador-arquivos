@@ -26,7 +26,7 @@ function splitNameAndExt(filename) {
 }
 
 // ==============================
-// Config (nomes fixos e itens com proprietário)
+// Config (nomes fixos e itens com proprietário e preconfig de tabelas)
 // ==============================
 
 const labelByIndexUrbano = {
@@ -77,36 +77,75 @@ const labelByIndexRural = {
     "2.11": "Certidão Civel Federal",
     "2.12": "CND IBAMA"
 };
-// Itens que (quando "Proprietário? = Sim") serão duplicados em 1 e 2
-const indicesComProprietario = new Set([
-    "2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11", "2.12"
-]);
+
+const TABELAS = {
+    PF_Urbano: {
+        key: "PF_Urbano",
+        containerID: "documentosPfUrbano",
+        tbodyID: "pfUrbanoTbody",
+        labels: labelByIndexUrbano,
+        // quais índices recebem sufixo _Proprietario quando tem 2
+        indicesComProprietario: new Set(["2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11"]),
+        // quais índices têm toggle (CNH/RG). Em PF é 2.1
+        indicesComToggleDoc: new Set(["2.1"]),
+    },
+    PF_Rural: {
+        key: "PF_Rural",
+        containerID: "documentosPfRural",
+        tbodyID: "pfRuralTbody",
+        labels: labelByIndexRural,
+        // quais índices recebem sufixo _Proprietario quando tem 2
+        indicesComProprietario: new Set(["2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11", "2.12"]),
+        // quais índices têm toggle (CNH/RG). Em PF é 2.1
+        indicesComToggleDoc: new Set(["2.1"]),
+    }
+}
+
+function getTabelaConfig() {
+    const tipo = document.getElementById('tipoImovel')?.value ?? '';
+    return TABELAS[tipo] ?? null;
+}
+
+function esconderTodasAsTabelas() {
+    Object.values(TABELAS).forEach(cfg => {
+        const el = document.getElementById(cfg.containerID);
+        if (el) el.style.display = 'none';
+    });
+}
+
+const TBODY_ORIGINAL = {};
+
+function salvarTbodyOriginal(cfg) {
+    const tbody = document.getElementById(cfg.tbodyID);
+    if (tbody && !TBODY_ORIGINAL[cfg.key]) {
+        TBODY_ORIGINAL[cfg.key] = tbody.innerHTML;
+    }
+}
+
+function pegarTbodyOriginal(cfg) {
+    return TBODY_ORIGINAL[cfg.key] ?? "";
+}
 
 // ==============================
 // UI: mostra/esconde campos
 // ==============================
 
-let pfUrbanoTbodyOriginalHTML = "";
-let pfRuralTbodyOriginalHTML = "";
-
 function mostrarCamposEspecificos() {
-    const tipoImovel = document.getElementById('tipoImovel').value;
-    const docDivUrbano = document.getElementById('documentosPfUrbano');
-    const docDivRural = document.getElementById('documentosPfRural');
+    const tipoImovel = document.getElementById('tipoImovel')?.value ?? '';
     const geralDiv = document.getElementById('arquivoGeralDiv');
     const arquivoGeralInput = document.getElementById('arquivoInputGeral');
+    const cfg = getTabelaConfig();
 
-    docDivUrbano.style.display = 'none';
-    docDivRural.style.display = 'none';
+    // Zera tudo
+    esconderTodasAsTabelas();
     geralDiv.style.display = 'none';
+    arquivoGeralInput.removeAttribute('required');
 
-    if (tipoImovel === 'PF_Urbano') {
-        docDivUrbano.style.display = 'block';
-        arquivoGeralInput.removeAttribute('required');
-    } else if (tipoImovel === 'PF_Rural') {
-        docDivRural.style.display = 'block';
-        arquivoGeralInput.removeAttribute('required'); 
-    } else if (tipoImovel) {
+    if (cfg) {
+        const container = document.getElementById(cfg.containerID);
+        if (container) container.style.display = 'block';
+    }
+    else if (tipoImovel) {
         geralDiv.style.display = 'block';
         arquivoGeralInput.setAttribute('required', 'required');
     }
@@ -116,34 +155,33 @@ function mostrarCamposEspecificos() {
 }
 
 function atualizarUIProprietario() {
-    const tipoImovel = document.getElementById('tipoImovel')?.value ?? '';
     const raw = document.getElementById('temProprietario')?.value;
     const temProprietario = raw && raw.trim() ? raw : '1';
+    const cfg = getTabelaConfig();
 
     const fields = document.getElementById('proprietarioFields');
     const input1 = document.getElementById('proprietario1');
     const input2 = document.getElementById('proprietario2');
 
-    const whichTable = (tipoImovel === 'PF_Urbano' || tipoImovel === 'PF_Rural');
-
-        if (!whichTable) {
+    if (!cfg) {
         fields.style.display = 'none'
         input1.removeAttribute('required');
         input2.removeAttribute('required');
         return;
     }
 
-    const tbodyId = 
-        (tipoImovel === 'PF_Urbano') ? 'pfUrbanoTbody' :
-        (tipoImovel === 'PF_Rural') ? 'pfRuralTbody' :
-        null;
-    
-    const tbody = tbodyId ? document.getElementById(tbodyId) : null;
+    const tbody = document.getElementById(cfg.tbodyID);
+    if (!tbody) {
+        fields.style.display = 'none'
+        input1.removeAttribute('required');
+        input2.removeAttribute('required');
+        return;
+    }
 
     const deveMostrarCampos = 
-    (temProprietario === '2' && whichTable);
+    (temProprietario === '2');
 
-    // Campos de nome: obrigatórios quando Sim + PF_Urbano ou PF_Rural
+    // Campos de nome: obrigatórios quando 2 proprietários + PF_Urbano ou PF_Rural
     fields.style.display = deveMostrarCampos ? 'block' : 'none';
     if (deveMostrarCampos) {
         input1.setAttribute('required', 'required');
@@ -153,23 +191,15 @@ function atualizarUIProprietario() {
         input2.removeAttribute('required');
     }
 
-    // Duplicar / restaurar linhas só quando PF Urbano
-    if (tipoImovel !== 'PF_Urbano' && tipoImovel !== 'PF_Rural') return;
-
     if (temProprietario === '2') {
         // Reconstruir o tbody duplicando os itens que têm proprietário
         const temp = document.createElement('tbody');
 
-        if (tipoImovel === 'PF_Urbano') {
-            temp.innerHTML = pfUrbanoTbodyOriginalHTML;
-        } else if (tipoImovel === 'PF_Rural') {
-            temp.innerHTML = pfRuralTbodyOriginalHTML;
-        }
+        temp.innerHTML = pegarTbodyOriginal(cfg);
 
         const novoTbody = document.createElement('tbody');
 
-        novoTbody.id = tbodyId;
-
+        novoTbody.id = cfg.tbodyID;
         const nomeProp1 = input1.value.trim();
         const nomeProp2 = input2.value.trim();
 
@@ -192,7 +222,7 @@ function atualizarUIProprietario() {
             }
 
             // Se esse índice não é “2 proprietários”, mantém a linha normal
-            if (!indicesComProprietario.has(index)) {
+            if (!cfg.indicesComProprietario.has(index)) {
                 novoTbody.appendChild(row);
                 return;
             }
@@ -206,8 +236,10 @@ function atualizarUIProprietario() {
             row2.dataset.proprietarioVariant = "2";
 
             // docTipo (para o item 2.1): começa com CNH
-            row1.dataset.docTipo = row.dataset.docTipo || "CNH";
-            row2.dataset.docTipo = row.dataset.docTipo || "CNH";
+            if (cfg.indicesComToggleDoc.has(index)) {
+                row1.dataset.docTipo = row.dataset.docTipo || "CNH";
+                row2.dataset.docTipo = row.dataset.docTipo || "CNH";
+            }
 
             // pega o TD da descrição (2ª coluna) em cada clone
             const desc1 = row1.querySelector("td:nth-child(2)");
@@ -228,8 +260,10 @@ function atualizarUIProprietario() {
                 ?? descTd.textContent.trim();
 
             // salva a baseDesc no dataset das linhas clonadas (pra não “acumular parênteses” depois)
+            
             row1.dataset.baseDesc = base;
             row2.dataset.baseDesc = base;
+            
 
             // Atualiza só o owner-label se ele existir (preserva botões CNH/RG do 2.1)
             const owner1 = desc1?.querySelector(".owner-label");
@@ -248,12 +282,9 @@ function atualizarUIProprietario() {
     } else {
         // Restaurar tbody original (sem duplicação)
         const original = document.createElement("tbody");
-        original.id = tbodyId;
+        original.id = cfg.tbodyID;
 
-        original.innerHTML = 
-        (tipoImovel === 'PF_Urbano') ? pfUrbanoTbodyOriginalHTML :
-        (tipoImovel === 'PF_Rural') ? pfRuralTbodyOriginalHTML :
-        '';
+        original.innerHTML = pegarTbodyOriginal(cfg);
 
         tbody.replaceWith(original);
         aplicarListenersInputsArquivo();
@@ -267,45 +298,42 @@ function removerParentesesDoFinal(text) {
 }
 
 function atualizarNomesProprietarios() {
-    const tipoImovel = document.getElementById('tipoImovel')?.value ?? '';
     const raw = document.getElementById('temProprietario')?.value;
     const temProprietario = raw && raw.trim() ? raw : '1';
+    const cfg = getTabelaConfig();
 
-    if ((tipoImovel === 'PF_Urbano' || tipoImovel === 'PF_Rural') && temProprietario === '2') {
-        const input1 = document.getElementById('proprietario1').value.trim();
-        const input2 = document.getElementById('proprietario2').value.trim();
+    if (!cfg || temProprietario !== '2') return;
 
-        const tbodyId = 
-            (tipoImovel === 'PF_Urbano') ? 'pfUrbanoTbody' :
-            (tipoImovel === 'PF_Rural') ? 'pfRuralTbody' :
-            null;
+    const tbody = document.getElementById(cfg.tbodyID);
+    if (!tbody) return;
 
-            if (!tbodyId) return;
+    const input1 = document.getElementById('proprietario1')?.value?.trim() ?? '';
+    const input2 = document.getElementById('proprietario2')?.value?.trim() ?? '';
 
-        const label1 = input1 || "Proprietário 1";
-        const label2 = input2 || "Proprietário 2";
+    const label1 = input1 || "Proprietário 1";
+    const label2 = input2 || "Proprietário 2";
 
-        document.querySelectorAll(`#${tbodyId} tr[data-proprietario-variant]`).forEach((row) => {
-            const variant = row.dataset.proprietarioVariant;
+    tbody.querySelectorAll('tr[data-proprietario-variant]').forEach((row) => {
+        const variant = row.dataset.proprietarioVariant;
+        if (variant !== "1" && variant !== "2") return;
 
-            const descTd = row.querySelector('td:nth-child(2)');
-            if (!descTd) return;
+        const descTd = row.querySelector('td:nth-child(2)');
+        if (!descTd) return;
 
-            // Se existir owner-label, atualiza só ele (preserva botões CNH/RG)
-            const owner = descTd.querySelector('.owner-label');
-            if (owner) {
-                owner.textContent = variant === "1" ? `(${label1})` : `(${label2})`;
-                return;
-            }
+        // Se existir owner-label, atualiza só ele (preserva botões CNH/RG)
+        const owner = descTd.querySelector('.owner-label');
+        const label = variant === "1" ? label1 : label2;
+        if (owner) {
+            owner.textContent = `(${label})`;
+            return;
+        }
 
-            // Caso normal (sem HTML extra), pode atualizar texto inteiro
-            const textoAtual = row.dataset.baseDesc || descTd.textContent;
-            const baseDesc = removerParentesesDoFinal(textoAtual);
+        // Caso normal (sem HTML extra), pode atualizar texto inteiro
+        const textoAtual = row.dataset.baseDesc || descTd.textContent;
+        const baseDesc = removerParentesesDoFinal(textoAtual);
 
-            descTd.textContent = `${baseDesc} (${variant === "1" ? label1 : label2})`;
-        });
-
-    }
+        descTd.textContent = `${baseDesc} (${label})`;
+    });
 }
 
 function configurarBotoesDocTipo() {
@@ -313,9 +341,17 @@ function configurarBotoesDocTipo() {
         const btn = e.target.closest(".btn-doc");
         if (!btn) return;
 
+        const cfg = getTabelaConfig();
+        if (!cfg) return; 
+
         const row = btn.closest("tr");
         if (!row) return;
 
+        const indexRaw = row.querySelector("td")?.textContent?.trim() || "";
+
+        if (!cfg.indicesComToggleDoc.has(indexRaw)) return;
+
+        // Atualiza o tipo no dataset da linha
         const tipo = btn.dataset.tipo; // "CNH" ou "RG"
         row.dataset.docTipo = tipo;
 
@@ -333,6 +369,7 @@ async function iniciarRenomeacao() {
     const loading = document.getElementById('loading');
     const downloadButton = document.getElementById('downloadButton');
     const form = document.getElementById("renomearForm");
+    const cfg = getTabelaConfig();
     if (form && !form.checkValidity()) {
         if (typeof form.reportValidity === 'function') form.reportValidity();
         return;
@@ -346,7 +383,8 @@ async function iniciarRenomeacao() {
         const idSite = document.getElementById('idSite').value.trim();
         const tipoImovel = document.getElementById('tipoImovel').value.trim();
 
-        const temProprietario = document.getElementById('temProprietario')?.value ?? '';
+        const raw = document.getElementById('temProprietario')?.value;
+        const temProprietario = raw && raw.trim() ? raw : '1';
         const proprietario1 = document.getElementById('proprietario1')?.value?.trim() ?? '';
         const proprietario2 = document.getElementById('proprietario2')?.value?.trim() ?? '';
 
@@ -356,7 +394,7 @@ async function iniciarRenomeacao() {
         }
 
         // Se marcar "Sim" em PF Urbano, os dois nomes são obrigatórios
-        if ((tipoImovel === 'PF_Urbano' || tipoImovel === 'PF_Rural') && temProprietario === '2') {
+        if (cfg && temProprietario === '2') {
             if (!proprietario1 || !proprietario2) {
                 alert('Você marcou "Proprietário? = Sim". Preencha obrigatoriamente Proprietário 1 e Proprietário 2.');
                 return;
@@ -370,19 +408,13 @@ async function iniciarRenomeacao() {
         const proprietario2Fmt = sanitizeTitle(proprietario2);
 
         const zip = new JSZip();
-
-        const tbodyId = 
-            (tipoImovel === 'PF_Urbano') ? 'pfUrbanoTbody' :
-            (tipoImovel === 'PF_Rural') ? 'pfRuralTbody' :
-            null;
-
-        if (tipoImovel === 'PF_Urbano' || tipoImovel === 'PF_Rural') {
-            if (!tbodyId) {
-                alert('Erro interno: tbodyId inválido para o tipo de imóvel selecionado.');
+        if (cfg) {
+            // Fluxo: múltiplos arquivos via tabela
+            const tbody = document.getElementById(cfg.tbodyID);
+            if (!tbody) {
+                alert('Erro interno: tabela de documentos não encontrada.');
                 return;
             }
-            // Fluxo: múltiplos arquivos via tabela
-            const tbody = document.getElementById(tbodyId);
             const rows = Array.from(tbody.querySelectorAll('tr'));
 
             // Agora gerar arquivos (0/1/2 por índice dependendo do que foi anexado)
@@ -399,21 +431,16 @@ async function iniciarRenomeacao() {
                 const arquivo = input.files[0];
                 const { base, ext } = splitNameAndExt(arquivo.name);
 
-                const labelByIndex =
-                    (tipoImovel === 'PF_Urbano') ? labelByIndexUrbano :
-                    (tipoImovel === 'PF_Rural') ? labelByIndexRural :
-                    {};
+                let label = cfg.labels[indexRaw] ?? sanitizeTitle(base);
 
-                let label = labelByIndex[indexRaw] ?? sanitizeTitle(base);
-
-                if (indexRaw === "2.1") {
-                    label = row.dataset.docTipo || "CNH";
+                if (cfg.indicesComToggleDoc.has(indexRaw)) {
+                    label = row.dataset.docTipo || label;
                 }
 
                 const variant = row.dataset.proprietarioVariant || ""; // "1" | "2" | ""
 
                 let sufixoProprietario = "";
-                if ((tipoImovel === 'PF_Urbano' || tipoImovel === 'PF_Rural') && temProprietario === '2' && indicesComProprietario.has(indexRaw) && variant) {
+                if (temProprietario === '2' && cfg.indicesComProprietario.has(indexRaw) && variant) {
                     const nomeProprietario = (variant === "1") ? proprietario1Fmt : proprietario2Fmt;
                     sufixoProprietario = nomeProprietario ? `_${nomeProprietario}` : "";
                 }
@@ -429,7 +456,7 @@ async function iniciarRenomeacao() {
 
             arquivosParaRenomear.forEach(item => zip.file(item.novoNome, item.arquivo));
 
-            const nomeZip = `${tipoImovel}_${operadoraFmt}_${siteFmt}_Documentos.zip`;
+            const nomeZip = `${cfg.key}_${operadoraFmt}_${siteFmt}_Documentos.zip`;
             const content = await zip.generateAsync({ type: 'blob' });
             dispararDownload(content, nomeZip);
             limparFormulario();
@@ -506,10 +533,7 @@ function dispararDownload(blob, filename) {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Salva os tbodys “originais” (sem duplicação) para restaurar quando temProprietario = 1
-    const tbodyUrbano = document.getElementById('pfUrbanoTbody');
-    if (tbodyUrbano) pfUrbanoTbodyOriginalHTML = tbodyUrbano.innerHTML;
-    const tbodyRural = document.getElementById('pfRuralTbody');
-    if (tbodyRural) pfRuralTbodyOriginalHTML = tbodyRural.innerHTML;
+    Object.values(TABELAS).forEach(cfg => salvarTbodyOriginal(cfg));
 
     mostrarCamposEspecificos();
     atualizarUIProprietario();

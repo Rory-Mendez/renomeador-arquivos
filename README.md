@@ -65,12 +65,27 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 ### v2.1.1 — Correções pontuais
 
 - Correção de erro do item em HTML
-- Campo de CND IBAMA aceita 2 porprietários
+- Campo de CND IBAMA aceita 2 proprietários
+
+### v2.2 — Refatoração para facilitar expansão
+
+- Refatoração motivada pela necessidade de escalar o número de tabelas
+- A abordagem anterior geraria alta duplicação e dificuldade de manutenção
+- As tabelas agora são geradas a partir de uma configuração central
+
+---
+
+### Decisões técnicas
+
+- Refatoração feita devido a necessidade de adicionar mais tabelas
+- Sem a refatoração, as tabelas iriam ficar muito dificil de manter
+- Tabelas agora são geradas a partir de uma configuração central
 
 ---
 
 ## Roadmap (Funcionalidades Futuras)
 
+- Adicionar novas tabelas agora ficou mais rápido graças à refatoração v2.2
 - Implementar as demais tabelas de renomeação  
   (atualmente apenas duas tabelas estão funcionais)
 - Permitir personalização da regra de renomeação  
