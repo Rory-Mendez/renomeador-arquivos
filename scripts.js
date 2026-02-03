@@ -29,7 +29,7 @@ function splitNameAndExt(filename) {
 // Config (nomes fixos e itens com proprietário e preconfig de tabelas)
 // ==============================
 
-const labelByIndexUrbano = {
+const labelByIndexPFUrbano = {
     "1.1": "Matrícula",
     "1.2.1": "Compra e Venda",
     "1.2.2": "Historico IPTU",
@@ -52,7 +52,7 @@ const labelByIndexUrbano = {
     "2.11": "Certidão Crim Federal"
 };
 
-const labelByIndexRural = {
+const labelByIndexPFRural = {
     "1.1": "Matrícula",
     "1.2.1": "Compra e Venda",
     "1.2.2": "Historico ITR",
@@ -78,12 +78,104 @@ const labelByIndexRural = {
     "2.12": "CND IBAMA"
 };
 
+const labelByIndexPJUrbano = {
+    "1.1": "Matrícula",
+    "1.2.1": "Compra e Venda",
+    "1.2.2": "Historico IPTU",
+    "1.2.3": "Contas Consumo",
+    "1.2.4": "Declaração Vizinhos",
+    "1.2.5": "Outros Documentos",
+    "1.3": "Certidão Inexistência Matrícula",
+    "1.4": "Comprovante IPTU",
+    "1.5": "CND IPTU",
+    "2.1": "Contrato Social",
+    "2.2": "Cartão CNPJ",
+    "2.3": "Certidão Junta Comercial",
+    "2.4": "Regularidade FGTS",
+    "2.5": "Documentos Representantes Legais",
+    "2.6": "Procuração",
+    "2.7": "Comprovante Bancário",
+    "2.8": "CND Tributos Municipal",
+    "2.9": "CND Tributos Estadual",
+    "2.10": "CND Tributos Federal",
+    "2.11": "Certidão Crim Sócios Estadual",
+    "2.12": "Certidão Crim PJ Estadual",
+    "2.13": "Certidão Civel PJ Estadual",
+    "2.14": "Certidão Civel Sócios Estadual",
+    "2.15": "Certidão Crim Sócios Federal",
+    "2.16": "Certidão Crim PJ Federal",
+    "2.17": "Certidão Civel PJ Federal",
+    "2.18": "Certidão Civel Sócios Federal",
+    "2.19": "CND Trabalhista",
+    "2.20": "Certidão Ações Trabalhistas"
+};
+
+const labelByIndexPJRural = {
+    "1.1": "Matrícula",
+    "1.2.1": "Compra e Venda",
+    "1.2.2": "Historico IPTU",
+    "1.2.3": "Contas Consumo",
+    "1.2.4": "Declaração Vizinhos",
+    "1.2.5": "Outros Documentos",
+    "1.3": "Certidão Inexistência Matrícula",
+    "1.4": "Comprovante ITR",
+    "1.5": "CND ITR",
+    "1.6": "CAR",
+    "1.7": "CCIR",
+    "2.1": "Contrato Social",
+    "2.2": "Cartão CNPJ",
+    "2.3": "Certidão Junta Comercial",
+    "2.4": "Regularidade FGTS",
+    "2.5": "Documentos Representantes Legais",
+    "2.6": "Procuração",
+    "2.7": "Comprovante Bancário",
+    "2.8": "CND Tributos Municipal",
+    "2.9": "CND Tributos Estadual",
+    "2.10": "CND Tributos Federal",
+    "2.11": "Certidão Crim Sócios Estadual",
+    "2.12": "Certidão Crim PJ Estadual",
+    "2.13": "Certidão Civel PJ Estadual",
+    "2.14": "Certidão Civel Sócios Estadual",
+    "2.15": "Certidão Crim Sócios Federal",
+    "2.16": "Certidão Crim PJ Federal",
+    "2.17": "Certidão Civel PJ Federal",
+    "2.18": "Certidão Civel Sócios Federal",
+    "2.19": "CND Trabalhista",
+    "2.20": "Certidão Ações Trabalhistas",
+    "2.21": "CND IBAMA"
+};
+
+const labelByIndexPJCondominio = {
+    "1.1": "Matrícula",
+    "1.4": "Comprovante IPTU",
+    "1.6": "Habite-se",
+    "1.7": "AVCB",
+    "1.8": "Planta do Imóvel",
+    "2.1": "Convenção Condomínio",
+    "2.2": "Cartão CNPJ",
+    "2.3": "Regulamento Interno",
+    "2.4": "Ata de Assembleia",
+    "2.5": "Ata Síndico",
+    "2.6": "Documentos Síndico",
+    "2.7": "Procuração",
+    "2.8": "Comprovante Bancário",
+    "2.9": "CND Tributos Municipal",
+    "2.10": "CND Tributos Estadual",
+    "2.11": "CND Tributos Federal",
+    "2.12": "Certidão Crim Estadual",
+    "2.13": "Certidão Crim Federal",
+    "2.14": "Certidão Civel Estadual",
+    "2.15": "Certidão Civel Federal",
+    "2.16": "CND Trabalhista",
+    "2.17": "Certidão Ações Trabalhistas"
+};
+
 const TABELAS = {
     PF_Urbano: {
         key: "PF_Urbano",
         containerID: "documentosPfUrbano",
         tbodyID: "pfUrbanoTbody",
-        labels: labelByIndexUrbano,
+        labels: labelByIndexPFUrbano,
         // quais índices recebem sufixo _Proprietario quando tem 2
         indicesComProprietario: new Set(["2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11"]),
         // quais índices têm toggle (CNH/RG). Em PF é 2.1
@@ -93,13 +185,43 @@ const TABELAS = {
         key: "PF_Rural",
         containerID: "documentosPfRural",
         tbodyID: "pfRuralTbody",
-        labels: labelByIndexRural,
+        labels: labelByIndexPFRural,
         // quais índices recebem sufixo _Proprietario quando tem 2
         indicesComProprietario: new Set(["2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11", "2.12"]),
         // quais índices têm toggle (CNH/RG). Em PF é 2.1
         indicesComToggleDoc: new Set(["2.1"]),
+    },
+    PJ_Urbano: {
+        key: "PJ_Urbano",
+        containerID: "documentosPjUrbano",
+        tbodyID: "pjUrbanoTbody",
+        labels: labelByIndexPJUrbano,
+        // quais índices recebem sufixo _Proprietario quando tem 2
+        indicesComProprietario: new Set(["2.5", "2.8", "2.9", "2.10", "2.11", "2.14", "2.15", "2.18"]),
+        // quais índices têm toggle (CNH/RG). Em PF é 2.1
+        indicesComToggleDoc: new Set(["2.5"]),
+    },
+    PJ_Rural: {
+        key: "PJ_Rural",
+        containerID: "documentosPjRural",
+        tbodyID: "pjRuralTbody",
+        labels: labelByIndexPJRural,
+        // quais índices recebem sufixo _Proprietario quando tem 2
+        indicesComProprietario: new Set(["2.5", "2.8", "2.9", "2.10", "2.11", "2.14", "2.15", "2.18"]),
+        // quais índices têm toggle (CNH/RG). Em PF é 2.1
+        indicesComToggleDoc: new Set(["2.5"]),
+    },
+    PJ_Condominio: {
+        key: "PJ_Condominio",
+        containerID: "documentosPjCondominio",
+        tbodyID: "pjCondominioTbody",
+        labels: labelByIndexPJCondominio,
+        // quais índices recebem sufixo _Proprietario quando tem 2
+        indicesComProprietario: new Set([]),
+        // quais índices têm toggle (CNH/RG). Em PF é 2.1
+        indicesComToggleDoc: new Set(["2.6"]),
     }
-}
+};
 
 function getTabelaConfig() {
     const tipo = document.getElementById('tipoImovel')?.value ?? '';
