@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Renomeador e Compactador (ZIP)</title>
+    <link rel="shortcut icon" href="assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="assets/icons/site.webmanifest">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="styles.css" rel="stylesheet">
 </head>
@@ -19,7 +24,7 @@
             <label for="idSite">ID Site:</label>
             <input autocomplete="off" type="text" id="idSite" required placeholder="Ex: PESEC03">
 
-            <label for="temProprietario">Quantos proprietários?</label>
+            <label for="temProprietario">Quantos proprietários/Sócios?</label>
             <select id="temProprietario" onchange="atualizarUIProprietario()" required>
                 <option value="" selected disabled>Selecione...</option>
                 <option value="1">1</option>
@@ -31,17 +36,17 @@
                 <option value="">Selecione o Tipo...</option>
                 <option value="PF_Urbano">1. PF - Urbano</option>
                 <option value="PF_Rural">2. PF - Rural</option>
-                <option value="PJ_Imóvel_Urbano">3. PJ Imóvel Urbano</option>
-                <option value="PJ_Rural">4. PJ Rural</option>
-                <option value="PJ_Condomínio">5. PJ Condomínio</option>
+                <option value="PJ_Urbano">3. PJ - Urbano</option>
+                <option value="PJ_Rural">4. PJ - Rural</option>
+                <option value="PJ_Condominio">5. PJ - Condomínio</option>
             </select>
 
             <!-- NOVO: campos de nomes (obrigatórios quando "Sim") -->
             <div id="proprietarioFields" style="display:none;">
-                <label for="proprietario1">Proprietário 1 (obrigatório):</label>
+                <label for="proprietario1">Proprietário/Sócio 1 (obrigatório):</label>
                 <input autocomplete="off" type="text" id="proprietario1" placeholder="Ex: Marcos">
 
-                <label for="proprietario2">Proprietário 2 (obrigatório):</label>
+                <label for="proprietario2">Proprietário/Sócio 2 (obrigatório):</label>
                 <input autocomplete="off" type="text" id="proprietario2" placeholder="Ex: Ana">
             </div>
             
@@ -135,17 +140,17 @@
                         </tr>
                         <tr>
                             <td>2.5</td>
-                            <td data-prefix="2.5 Certidão Negativa de Débitos Tributários Municipais">Certidão Negativa de Débitos Tributários Municipais</td>
+                            <td data-prefix="2.5 Certidão Negativa de Débitos Tributários Municipal">Certidão Negativa de Débitos Tributários Municipal</td>
                             <td><input type="file" id="file_2_5"></td>
                         </tr>
                         <tr>
                             <td>2.6</td>
-                            <td data-prefix="2.6 Certidão Negativa de Débitos Tributários Estaduais">Certidão Negativa de Débitos Tributários Estaduais</td>
+                            <td data-prefix="2.6 Certidão Negativa de Débitos Tributários Estadual">Certidão Negativa de Débitos Tributários Estadual</td>
                             <td><input type="file" id="file_2_6"></td>
                         </tr>
                         <tr>
                             <td>2.7</td>
-                            <td data-prefix="2.7 Certidão Negativa de Débitos Tributários Federais">Certidão Negativa de Débitos Tributários Federais</td>
+                            <td data-prefix="2.7 Certidão Negativa de Débitos Tributários Federal">Certidão Negativa de Débitos Tributários Federal</td>
                             <td><input type="file" id="file_2_7"></td>
                         </tr>
                         <tr>
@@ -188,57 +193,57 @@
                         <tr>
                             <td>1.1</td>
                             <td data-prefix="1.1_Cópia_da_Certidão_de_Inteiro_Teor_de_Matrícula_Atualizada_e_da_Certidão_Negativa_de_Ônus_Reais">Copia da Certidão de Inteiro Teor de Matricula Atualizada e da Certidão Negativa de Ônus Reais</td>
-                            <td><input type="file" id="file_1_1_rural"></td>
+                            <td><input type="file" id="file_1_1_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.2.1</td>
                             <td data-prefix="1.2.1_Contratos_de_Compra_e_Venda_firmados_anteriormente">Contratos de Compra e Venda firmados anteriormente</td>
-                            <td><input type="file" id="file_1_2_1_rural"></td>
+                            <td><input type="file" id="file_1_2_1_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.2.2</td>
                             <td data-prefix="1.2.2_Histórico_de_ITR">Histórico de ITR</td>
-                            <td><input type="file" id="file_1_2_2_rural"></td>
+                            <td><input type="file" id="file_1_2_2_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.2.3</td>
                             <td data-prefix="1.2.3_Contas_de_consumo">Contas de consumo</td>
-                            <td><input type="file" id="file_1_2_3_rural"></td>
+                            <td><input type="file" id="file_1_2_3_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.2.4</td>
                             <td data-prefix="1.2.4_Declaração_dos_vizinhos">Declaração dos vizinhos</td>
-                            <td><input type="file" id="file_1_2_4_rural"></td>
+                            <td><input type="file" id="file_1_2_4_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.2.5</td>
                             <td data-prefix="1.2.5_Se_necessário_outros_documentos">Se necessário: outros documentos</td>
-                            <td><input type="file" id="file_1_2_5_rural"></td>
+                            <td><input type="file" id="file_1_2_5_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.3</td>
                             <td data-prefix="1.3_Certidão_de_Inexistência_de_Matrícula_expedida_pelo_Cartório_competente">Certidão de Inexistência de Matrícula expedida pelo Cartório competente</td>
-                            <td><input type="file" id="file_1_3_rural"></td>
+                            <td><input type="file" id="file_1_3_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.4</td>
                             <td data-prefix="1.4_Comprovante_de_ITR_atualizado">Comprovante de ITR atualizado</td>
-                            <td><input type="file" id="file_1_4_rural"></td>
+                            <td><input type="file" id="file_1_4_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.5</td>
                             <td data-prefix="1.5_Certidão_Negativa_de_ITR">Certidão Negativa de ITR</td>
-                            <td><input type="file" id="file_1_5_rural"></td>
+                            <td><input type="file" id="file_1_5_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.6</td>
                             <td data-prefix="1.6_CAR_do_Imóvel">CAR do Imóvel</td>
-                            <td><input type="file" id="file_1_6_rural"></td>
+                            <td><input type="file" id="file_1_6_PFrural"></td>
                         </tr>
                         <tr>
                             <td>1.7</td>
                             <td data-prefix="1.7_CCIR">CCIR</td>
-                            <td><input type="file" id="file_1_7_rural"></td>
+                            <td><input type="file" id="file_1_7_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.1</td>
@@ -250,62 +255,549 @@
                                 <button type="button" class="btn-doc" data-tipo="RG">RG</button>
                                 </span>
                             </td>
-                            <td><input type="file" id="file_2_1_rural"></td>
+                            <td><input type="file" id="file_2_1_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.2</td>
                             <td data-prefix="2.2 2.2 Comprovante de endereço">Comprovante de endereço</td>
-                            <td><input type="file" id="file_2_2_rural"></td>
+                            <td><input type="file" id="file_2_2_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.3</td>
                             <td data-prefix="2.3 Comprovante bancário">Comprovante bancário</td>
-                            <td><input type="file" id="file_2_3_rural"></td>
+                            <td><input type="file" id="file_2_3_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.4</td>
                             <td data-prefix="2.4 Certidão de Casamento e/ou Nascimento Atualizadas">Certidão de Casamento e/ou Nascimento Atualizadas</td>
-                            <td><input type="file" id="file_2_4_rural"></td>
+                            <td><input type="file" id="file_2_4_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.5</td>
-                            <td data-prefix="2.5 Certidão Negativa de Débitos Tributários Municipais">Certidão Negativa de Débitos Tributários Municipais</td>
-                            <td><input type="file" id="file_2_5_rural"></td>
+                            <td data-prefix="2.5 Certidão Negativa de Débitos Tributários Municipal">Certidão Negativa de Débitos Tributários Municipal</td>
+                            <td><input type="file" id="file_2_5_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.6</td>
-                            <td data-prefix="2.6 Certidão Negativa de Débitos Tributários Estaduais">Certidão Negativa de Débitos Tributários Estaduais</td>
-                            <td><input type="file" id="file_2_6_rural"></td>
+                            <td data-prefix="2.6 Certidão Negativa de Débitos Tributários Estadual">Certidão Negativa de Débitos Tributários Estadual</td>
+                            <td><input type="file" id="file_2_6_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.7</td>
-                            <td data-prefix="2.7 Certidão Negativa de Débitos Tributários Federais">Certidão Negativa de Débitos Tributários Federais</td>
-                            <td><input type="file" id="file_2_7_rural"></td>
+                            <td data-prefix="2.7 Certidão Negativa de Débitos Tributários Federal">Certidão Negativa de Débitos Tributários Federal</td>
+                            <td><input type="file" id="file_2_7_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.8</td>
                             <td data-prefix="2.8 Certidão de Distribuição de Ações Criminais, na jurisdição Estadual">Certidão de Distribuição de Ações Criminais, na jurisdição Estadual</td>
-                            <td><input type="file" id="file_2_8_rural"></td>
+                            <td><input type="file" id="file_2_8_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.9</td>
                             <td data-prefix="2.9 Certidão de Distribuição de Ações Cíveis, na jurisdição Estadual">Certidão de Distribuição de Ações Cíveis, na jurisdição Estadual</td>
-                            <td><input type="file" id="file_2_9_rural"></td>
+                            <td><input type="file" id="file_2_9_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.10</td>
                             <td data-prefix="2.10 Certidão de Distribuição de Ações Criminais, na jurisdição Federal">Certidão de Distribuição de Ações Criminais, na jurisdição Federal</td>
-                            <td><input type="file" id="file_2_10_rural"></td>
+                            <td><input type="file" id="file_2_10_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.11</td>
                             <td data-prefix="2.11 Certidão de Distribuição de Ações Cíveis, na jurisdição Federal">Certidão de Distribuição de Ações Cíveis, na jurisdição Federal</td>
-                            <td><input type="file" id="file_2_11_rural"></td>
+                            <td><input type="file" id="file_2_11_PFrural"></td>
                         </tr>
                         <tr>
                             <td>2.12</td>
                             <td data-prefix="2.12 Certidão Negativa de Débito - Ambiental do IBAMA (CND IBAMA)">Certidão Negativa de Débito - Ambiental do IBAMA (CND IBAMA)</td>
-                            <td><input type="file" id="file_2_12_rural"></td>
+                            <td><input type="file" id="file_2_12_PFrural"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="documentosPjUrbano">
+                <h2>📁 Documentos PJ - Urbano</h2>
+                <p class="doc-descrição">Selecione o arquivo correspondente. Alguns itens podem ser duplicados quando "Proprietário = 2".</p>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Descrição Completa</th>
+                            <th>Arquivo Original</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pjUrbanoTbody">
+                        <tr>
+                            <td>1.1</td>
+                            <td data-prefix="1.1_Cópia_da_Certidão_de_Inteiro_Teor_de_Matrícula_Atualizada_e_da_Certidão_Negativa_de_Ônus_Reais">Copia da Certidão de Inteiro Teor de Matricula Atualizada e da Certidão Negativa de Ônus Reais</td>
+                            <td><input type="file" id="file_1_1_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.1</td>
+                            <td data-prefix="1.2.1_Contratos_de_Compra_e_Venda_firmados_anteriormente">Contratos de Compra e Venda firmados anteriormente</td>
+                            <td><input type="file" id="file_1_2_1_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.2</td>
+                            <td data-prefix="1.2.2_Histórico_de_IPTU">Histórico de IPTU</td>
+                            <td><input type="file" id="file_1_2_2_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.3</td>
+                            <td data-prefix="1.2.3_Contas_de_consumo">Contas de consumo</td>
+                            <td><input type="file" id="file_1_2_3_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.4</td>
+                            <td data-prefix="1.2.4_Declaração_dos_vizinhos">Declaração dos vizinhos</td>
+                            <td><input type="file" id="file_1_2_4_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.5</td>
+                            <td data-prefix="1.2.5_Se_necessário_outros_documentos">Se necessário: outros documentos</td>
+                            <td><input type="file" id="file_1_2_5_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>1.3</td>
+                            <td data-prefix="1.3_Certidão_de_Inexistência_de_Matrícula_expedida_pelo_Cartório_competente">Certidão de Inexistência de Matrícula expedida pelo Cartório competente</td>
+                            <td><input type="file" id="file_1_3_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>1.4</td>
+                            <td data-prefix="1.4_Comprovante_de_IPTU_atualizado">Comprovante de IPTU atualizado</td>
+                            <td><input type="file" id="file_1_4_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>1.5</td>
+                            <td data-prefix="1.5_Certidão_Negativa_de_IPTU">Certidão Negativa de IPTU</td>
+                            <td><input type="file" id="file_1_5_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.1</td>
+                            <td data-prefix="2.1 Cópia do Contrato/Estatuto Social e alterações">Cópia do Contrato/Estatuto Social e alterações</td>
+                            <td><input type="file" id="file_2_1_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.2</td>
+                            <td data-prefix="2.2 Cartão CNPJ">Cartão CNPJ</td>
+                            <td><input type="file" id="file_2_2_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.3</td>
+                            <td data-prefix="2.3 Certidão atualizada da Junta Comercial competente, indicando os sócios (QSA), administradores e qual a última alteração contratual">Certidão atualizada da Junta Comercial competente, indicando os sócios (QSA), administradores e qual a última alteração contratual</td>
+                            <td><input type="file" id="file_2_3_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.4</td>
+                            <td data-prefix="2.4 Certificado de Regularidade FGTS">Certificado de Regularidade FGTS</td>
+                            <td><input type="file" id="file_2_4_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.5</td>
+                            <td data-prefix="2.5 Documentos Pessoais dos Representantes Legais">
+                                <span class="base-desc">Documentos Pessoais dos Representantes Legais</span>
+                                <span class="owner-label"></span>
+                                <span class="doc-toggles">
+                                <button type="button" class="btn-doc active" data-tipo="CNH">CNH</button>
+                                <button type="button" class="btn-doc" data-tipo="RG">RG</button>
+                                </span>
+                            </td>
+                            <td><input type="file" id="file_2_5_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.6</td>
+                            <td data-prefix="2.6 Se necessário: Procuração">Se necessário: Procuração</td>
+                            <td><input type="file" id="file_2_6_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.7</td>
+                            <td data-prefix="2.7 Comprovante bancário">Comprovante bancário</td>
+                            <td><input type="file" id="file_2_7_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.8</td>
+                            <td data-prefix="2.8 Certidão Negativa de Débitos Tributários Municipal">Certidão Negativa de Débitos Tributários Municipal</td>
+                            <td><input type="file" id="file_2_8_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.9</td>
+                            <td data-prefix="2.9 Certidão Negativa de Débitos Tributários Estadual">Certidão Negativa de Débitos Tributários Estadual</td>
+                            <td><input type="file" id="file_2_9_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.10</td>
+                            <td data-prefix="2.10 Certidão Negativa de Débitos Tributários Federal">Certidão Negativa de Débitos Tributários Federal</td>
+                            <td><input type="file" id="file_2_10_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.11</td>
+                            <td data-prefix="2.11 Certidão de Distribuição de Ações Criminais dos Sócios, na jurisdição Estadual">Certidão de Distribuição de Ações Criminais dos Sócios, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_11_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.12</td>
+                            <td data-prefix="2.12 Certidão de Distribuição de Ações Criminais da PJ, na jurisdição Estadual">Certidão de Distribuição de Ações Criminais da PJ, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_12_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.13</td>
+                            <td data-prefix="2.13 Certidão de Distribuição de Ações Cíveis da PJ, na jurisdição Estadual">Certidão de Distribuição de Ações Cíveis da PJ, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_13_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.14</td>
+                            <td data-prefix="2.14 Certidão de Distribuição de Ações Cíveis dos Sócios, na jurisdição Estadual">Certidão de Distribuição de Ações Cíveis dos Sócios, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_14_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.15</td>
+                            <td data-prefix="2.15 Certidão de Distribuição de Ações Criminais dos Sócios, na jurisdição Federal">Certidão de Distribuição de Ações Criminais dos Sócios, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_15_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.16</td>
+                            <td data-prefix="2.16 Certidão de Distribuição de Ações Criminais da PJ, na jurisdição Federal">Certidão de Distribuição de Ações Criminais da PJ, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_16_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.17</td>
+                            <td data-prefix="2.17 Certidão de Distribuição de Ações Cíveis da PJ, na jurisdição Federal">Certidão de Distribuição de Ações Cíveis da PJ, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_17_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.18</td>
+                            <td data-prefix="2.18 Certidão de Distribuição de Ações Cíveis dos Sócios, na jurisdição Federal">Certidão de Distribuição de Ações Cíveis dos Sócios, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_18_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.19</td>
+                            <td data-prefix="2.19 CND Trabalhista (Certidão emitida pelo TST)">CND Trabalhista (Certidão emitida pelo TST)</td>
+                            <td><input type="file" id="file_2_19_PJurbano"></td>
+                        </tr>
+                        <tr>
+                            <td>2.20</td>
+                            <td data-prefix="2.20 Certidão de Distribuição de Ações Trabalhistas (Certidão emitida pelo TRT competente)">Certidão de Distribuição de Ações Trabalhistas (Certidão emitida pelo TRT competente)</td>
+                            <td><input type="file" id="file_2_20_PJurbano"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="documentosPjRural">
+                <h2>📁 Documentos PJ - Rural</h2>
+                <p class="doc-descrição">Selecione o arquivo correspondente. Alguns itens podem ser duplicados quando "Proprietário = 2".</p>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Descrição Completa</th>
+                            <th>Arquivo Original</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pjRuralTbody">
+                        <tr>
+                            <td>1.1</td>
+                            <td data-prefix="1.1_Cópia_da_Certidão_de_Inteiro_Teor_de_Matrícula_Atualizada_e_da_Certidão_Negativa_de_Ônus_Reais">Copia da Certidão de Inteiro Teor de Matricula Atualizada e da Certidão Negativa de Ônus Reais</td>
+                            <td><input type="file" id="file_1_1_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.1</td>
+                            <td data-prefix="1.2.1_Contratos_de_Compra_e_Venda_firmados_anteriormente">Contratos de Compra e Venda firmados anteriormente</td>
+                            <td><input type="file" id="file_1_2_1_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.2</td>
+                            <td data-prefix="1.2.2_Histórico_de_ITR">Histórico de ITR</td>
+                            <td><input type="file" id="file_1_2_2_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.3</td>
+                            <td data-prefix="1.2.3_Contas_de_consumo">Contas de consumo</td>
+                            <td><input type="file" id="file_1_2_3_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.4</td>
+                            <td data-prefix="1.2.4_Declaração_dos_vizinhos">Declaração dos vizinhos</td>
+                            <td><input type="file" id="file_1_2_4_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.2.5</td>
+                            <td data-prefix="1.2.5_Se_necessário_outros_documentos">Se necessário: outros documentos</td>
+                            <td><input type="file" id="file_1_2_5_PPJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.3</td>
+                            <td data-prefix="1.3_Certidão_de_Inexistência_de_Matrícula_expedida_pelo_Cartório_competente">Certidão de Inexistência de Matrícula expedida pelo Cartório competente</td>
+                            <td><input type="file" id="file_1_3_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.4</td>
+                            <td data-prefix="1.4_Comprovante_de_ITR_atualizado">Comprovante de ITR atualizado</td>
+                            <td><input type="file" id="file_1_4_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.5</td>
+                            <td data-prefix="1.5_Certidão_Negativa_de_ITR">Certidão Negativa de ITR</td>
+                            <td><input type="file" id="file_1_5_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.6</td>
+                            <td data-prefix="1.6_CAR_do_Imóvel">CAR do Imóvel</td>
+                            <td><input type="file" id="file_1_6_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>1.7</td>
+                            <td data-prefix="1.7_CCIR">CCIR</td>
+                            <td><input type="file" id="file_1_7_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.1</td>
+                            <td data-prefix="2.1 Cópia do Contrato/Estatuto Social e alterações">Cópia do Contrato/Estatuto Social e alterações</td>
+                            <td><input type="file" id="file_2_1_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.2</td>
+                            <td data-prefix="2.2 Cartão CNPJ">Cartão CNPJ</td>
+                            <td><input type="file" id="file_2_2_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.3</td>
+                            <td data-prefix="2.3 Certidão atualizada da Junta Comercial competente, indicando os sócios (QSA), administradores e qual a última alteração contratual">Certidão atualizada da Junta Comercial competente, indicando os sócios (QSA), administradores e qual a última alteração contratual</td>
+                            <td><input type="file" id="file_2_3_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.4</td>
+                            <td data-prefix="2.4 Certificado de Regularidade FGTS">Certificado de Regularidade FGTS</td>
+                            <td><input type="file" id="file_2_4_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.5</td>
+                            <td data-prefix="2.5 Documentos Pessoais dos Representantes Legais">
+                                <span class="base-desc">Documentos Pessoais dos Representantes Legais</span>
+                                <span class="owner-label"></span>
+                                <span class="doc-toggles">
+                                <button type="button" class="btn-doc active" data-tipo="CNH">CNH</button>
+                                <button type="button" class="btn-doc" data-tipo="RG">RG</button>
+                                </span>
+                            </td>
+                            <td><input type="file" id="file_2_5_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.6</td>
+                            <td data-prefix="2.6 Se necessário: Procuração">Se necessário: Procuração</td>
+                            <td><input type="file" id="file_2_6_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.7</td>
+                            <td data-prefix="2.7 Comprovante bancário">Comprovante bancário</td>
+                            <td><input type="file" id="file_2_7_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.8</td>
+                            <td data-prefix="2.8 Certidão Negativa de Débitos Tributários Municipal">Certidão Negativa de Débitos Tributários Municipal</td>
+                            <td><input type="file" id="file_2_8_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.9</td>
+                            <td data-prefix="2.9 Certidão Negativa de Débitos Tributários Estadual">Certidão Negativa de Débitos Tributários Estadual</td>
+                            <td><input type="file" id="file_2_9_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.10</td>
+                            <td data-prefix="2.10 Certidão Negativa de Débitos Tributários Federal">Certidão Negativa de Débitos Tributários Federal</td>
+                            <td><input type="file" id="file_2_10_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.11</td>
+                            <td data-prefix="2.11 Certidão de Distribuição de Ações Criminais dos Sócios, na jurisdição Estadual">Certidão de Distribuição de Ações Criminais dos Sócios, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_11_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.12</td>
+                            <td data-prefix="2.12 Certidão de Distribuição de Ações Criminais da PJ, na jurisdição Estadual">Certidão de Distribuição de Ações Criminais da PJ, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_12_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.13</td>
+                            <td data-prefix="2.13 Certidão de Distribuição de Ações Cíveis da PJ, na jurisdição Estadual">Certidão de Distribuição de Ações Cíveis da PJ, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_13_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.14</td>
+                            <td data-prefix="2.14 Certidão de Distribuição de Ações Cíveis dos Sócios, na jurisdição Estadual">Certidão de Distribuição de Ações Cíveis dos Sócios, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_14_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.15</td>
+                            <td data-prefix="2.15 Certidão de Distribuição de Ações Criminais dos Sócios, na jurisdição Federal">Certidão de Distribuição de Ações Criminais dos Sócios, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_15_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.16</td>
+                            <td data-prefix="2.16 Certidão de Distribuição de Ações Criminais da PJ, na jurisdição Federal">Certidão de Distribuição de Ações Criminais da PJ, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_16_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.17</td>
+                            <td data-prefix="2.17 Certidão de Distribuição de Ações Cíveis da PJ, na jurisdição Federal">Certidão de Distribuição de Ações Cíveis da PJ, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_17_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.18</td>
+                            <td data-prefix="2.18 Certidão de Distribuição de Ações Cíveis dos Sócios, na jurisdição Federal">Certidão de Distribuição de Ações Cíveis dos Sócios, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_18_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.19</td>
+                            <td data-prefix="2.19 CND Trabalhista (Certidão emitida pelo TST)">CND Trabalhista (Certidão emitida pelo TST)</td>
+                            <td><input type="file" id="file_2_19_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.20</td>
+                            <td data-prefix="2.20 Certidão de Distribuição de Ações Trabalhistas (Certidão emitida pelo TRT competente)">Certidão de Distribuição de Ações Trabalhistas (Certidão emitida pelo TRT competente)</td>
+                            <td><input type="file" id="file_2_20_PJRural"></td>
+                        </tr>
+                        <tr>
+                            <td>2.21</td>
+                            <td data-prefix="2.21 Certidão Negativa de Débito - Ambiental do IBAMA (CND IBAMA)">Certidão Negativa de Débito - Ambiental do IBAMA (CND IBAMA)</td>
+                            <td><input type="file" id="file_2_20_PJRural"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="documentosPjCondominio">
+                <h2>📁 Documentos PJ - Condomínio</h2>
+                <p class="doc-descrição">Selecione o arquivo correspondente. Alguns itens podem ser duplicados quando "Proprietário = 2".</p>
+                
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Descrição Completa</th>
+                            <th>Arquivo Original</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pjCondominioTbody">
+                        <tr>
+                            <td>1.1</td>
+                            <td data-prefix="1.1_Cópia_da_Certidão_de_Inteiro_Teor_de_Matrícula_Atualizada_com_Ficha_Auxiliar_e_da_Certidão_Negativa_de_Ônus_Reais_do_Condomínio_ou_Matrícula_de_uma_Unidade_Autônoma">Cópia da Certidão de Inteiro Teor de Matrícula Atualizada com Ficha Auxiliar e da Certidão Negativa de Ônus Reais do Condomínio ou Matrícula de uma Unidade Autônoma</td>
+                            <td><input type="file" id="file_1_1_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>1.4</td>
+                            <td data-prefix="1.4_Comprovante_de_IPTU_Atualizado_de_uma_Unidade">Comprovante de IPTU Atualizado de uma Unidade</td>
+                            <td><input type="file" id="file_1_4_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>1.6</td>
+                            <td data-prefix="1.6_Habite-se">Habite-se</td>
+                            <td><input type="file" id="file_1_6_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>1.7</td>
+                            <td data-prefix="1.7_AVCB">AVCB</td>
+                            <td><input type="file" id="file_1_7_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>1.8</td>
+                            <td data-prefix="1.8_Planta_do_Imóvel">Planta do Imóvel, se possível</td>
+                            <td><input type="file" id="file_1_8_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.1</td>
+                            <td data-prefix="2.1 Cópia de Convenção de Condomínio atualizada, com prova do registro em cartório">Cópia de Convenção de Condomínio atualizada, com prova do registro em cartório</td>
+                            <td><input type="file" id="file_2_1_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.2</td>
+                            <td data-prefix="2.2 Cartão CNPJ">Cartão CNPJ</td>
+                            <td><input type="file" id="file_2_2_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.3</td>
+                            <td data-prefix="2.3 Regulamento interno do Condomínio">Regulamento interno do Condomínio</td>
+                            <td><input type="file" id="file_2_3_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.4</td>
+                            <td data-prefix="2.4 Ata de Assembleia que aprovou a celebração do contrato, juntamente com a lista de presença e edital de convocação">Ata de Assembleia que aprovou a celebração do contrato, juntamente com a lista de presença e edital de convocação</td>
+                            <td><input type="file" id="file_2_4_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.5</td>
+                            <td data-prefix="2.5 Ata de eleição do Síndico">Ata de eleição do Síndico</td>
+                            <td><input type="file" id="file_2_5_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.6</td>
+                            <td data-prefix="2.6 Documentos pessoais do Síndico">
+                                <span class="base-desc">Documentos pessoais do Síndico</span>
+                                <span class="owner-label"></span>
+                                <span class="doc-toggles">
+                                <button type="button" class="btn-doc active" data-tipo="CNH">CNH</button>
+                                <button type="button" class="btn-doc" data-tipo="RG">RG</button>
+                                </span>
+                            </td>
+                            <td><input type="file" id="file_2_6_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.7</td>
+                            <td data-prefix="2.7 Se necessário: Procuração">Se necessário: Procuração</td>
+                            <td><input type="file" id="file_2_7_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.8</td>
+                            <td data-prefix="2.8 Comprovante Bancário">Comprovante Bancário</td>
+                            <td><input type="file" id="file_2_8_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.9</td>
+                            <td data-prefix="2.9 Certidão Negativa de Débitos Tributários Municipal">Certidão Negativa de Débitos Tributários Municipal</td>
+                            <td><input type="file" id="file_2_9_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.10</td>
+                            <td data-prefix="2.10 Certidão Negativa de Débitos Tributários Estadual">Certidão Negativa de Débitos Tributários Estadual</td>
+                            <td><input type="file" id="file_2_10_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.11</td>
+                            <td data-prefix="2.11 Certidão Negativa de Débitos Tributários Federal">Certidão Negativa de Débitos Tributários Federal</td>
+                            <td><input type="file" id="file_2_11_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.12</td>
+                            <td data-prefix="2.12 Certidão de Distribuição de Ações Criminais, na jurisdição Estadual">Certidão de Distribuição de Ações Criminais, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_12_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.13</td>
+                            <td data-prefix="2.13 Certidão de Distribuição de Ações Criminais, na jurisdição Federal">Certidão de Distribuição de Ações Criminais, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_13_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.14</td>
+                            <td data-prefix="2.14 Certidão de Distribuição de Ações Cíveis, na jurisdição Estadual">Certidão de Distribuição de Ações Cíveis, na jurisdição Estadual</td>
+                            <td><input type="file" id="file_2_14_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.15</td>
+                            <td data-prefix="2.15 Certidão de Distribuição de Ações Cíveis, na jurisdição Federal">Certidão de Distribuição de Ações Cíveis, na jurisdição Federal</td>
+                            <td><input type="file" id="file_2_15_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.16</td>
+                            <td data-prefix="2.16 CND Trabalhista (Certidão emitida pelo TST)">CND Trabalhista (Certidão emitida pelo TST)</td>
+                            <td><input type="file" id="file_2_16_PJCondominio"></td>
+                        </tr>
+                        <tr>
+                            <td>2.17</td>
+                            <td data-prefix="2.17 Certidão de Distribuição de Ações Trabalhistas (Certidão emitida pelo TRT competente)">Certidão de Distribuição de Ações Trabalhistas (Certidão emitida pelo TRT competente)</td>
+                            <td><input type="file" id="file_2_17_PJCondominio"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -323,6 +815,7 @@
             <button type="button" id="downloadButton" onclick="iniciarRenomeacao()">Criar Arquivo ZIP com Documentos Renomeados</button>
         </form>
     </div>
+    <footer><a href="https://www.flaticon.com/free-icons/rename" title="rename icons">Rename icons created by riajulislam - Flaticon</a></footer>
 
     <script src="scripts.js"></script>
 
