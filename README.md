@@ -13,6 +13,15 @@ O projeto roda 100% no front-end e gera um arquivo ZIP com os arquivos renomeado
 
 ---
 
+## Como Usar
+
+- Preencha ID Operadora e ID Site
+- Selecione proprietários e tipo de imóvel
+- Anexe os arquivos por item
+- Clique em “Criar ZIP” para baixar
+
+---
+
 ## Motivação
 
 Este projeto surgiu da necessidade de automatizar a padronização de nomes de arquivos enviados por clientes, seguindo regras rígidas definidas pela empresa.
@@ -25,7 +34,7 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 ## Funcionalidades Atuais
 
 - Renomeação automática de arquivos em lote
-- Suporte a **até dois proprietários**
+- Suporte às tabelas: PF Urbano, PF Rural, PJ Urbano, PJ Rural e PJ Condomínio
 - Seleção do tipo de documento (**RG ou CNH**)
 - Geração de arquivo **ZIP** para download
 - Limpeza automática dos anexos após o download
@@ -75,19 +84,25 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 
 ---
 
+### 3.0 — Tabelas completas + ícones (PWA / favicons)
+
+- Suporte para as tabelas de renomeação restantes (PJ Urbano, PJ Rural e PF Condomínio)
+- Adição de favicons e ícones (web/iOS)
+- Crédito ao criador do ícone no footer
+
 ### Decisões técnicas
 
-- Refatoração feita devido a necessidade de adicionar mais tabelas
-- Sem a refatoração, as tabelas iriam ficar muito dificil de manter
-- Tabelas agora são geradas a partir de uma configuração central
+- O projeto foi desenvolvido 100% em front-end para permitir uso imediato, sem necessidade de backend ou infraestrutura adicional
+- A estrutura inicial das tabelas foi refatorada (v2.2) para evitar duplicação de código e facilitar a manutenção
+- As tabelas de renomeação passaram a ser geradas a partir de uma configuração central, permitindo adicionar novas tabelas com baixo impacto no código
+- A geração do ZIP é feita no navegador para preservar a privacidade dos arquivos, que não são enviados a servidores externos
+- A adição de ícones e manifest (v3.0) prepara o projeto para uso como PWA e melhora a experiência em dispositivos móveis
 
 ---
 
 ## Roadmap (Funcionalidades Futuras)
 
 - Adicionar novas tabelas agora ficou mais rápido graças à refatoração v2.2
-- Implementar as demais tabelas de renomeação  
-  (atualmente apenas duas tabelas estão funcionais)
 - Permitir personalização da regra de renomeação  
   (usuário escolhe ordem e formato do nome final)
 - Converter imagens (`jpg`, `jpeg`, `png`) em PDFs individuais antes da geração do ZIP
