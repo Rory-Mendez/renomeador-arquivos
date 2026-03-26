@@ -1,112 +1,129 @@
 # Renomeador de Arquivos em Lote
 
-Aplicação web desenvolvida em HTML, CSS e JavaScript para renomear múltiplos arquivos de uma vez, diretamente no navegador, seguindo regras específicas de padronização exigidas por processos internos.
+Ferramenta web desenvolvida para **automatizar a padronização e organização de documentos operacionais**, reduzindo trabalho manual, erros humanos e tempo gasto em fluxos internos de uma empresa de telecomunicações.
 
-O projeto roda 100% no front-end e gera um arquivo ZIP com os arquivos renomeados.
+A aplicação permite renomear múltiplos arquivos diretamente no navegador, seguindo regras específicas de nomenclatura exigidas por cada cliente do setor.
+
+O projeto roda **100% no front-end**, gera um arquivo ZIP com os arquivos renomeados e **nunca envia dados para servidores** — preservando total privacidade dos documentos.
 
 ---
 
 ## Demonstração
 
-🔗 Demo online (GitHub Pages):  
+🔗 Demo online (GitHub Pages):
 <https://rory-mendez.github.io/renomeador-arquivos/>
+
+---
+
+## Contexto e Motivação
+
+No fluxo de aquisição e licenciamento de infraestrutura de telecomunicações, documentos enviados por proprietários de terrenos precisam seguir **padrões rígidos de nomenclatura**, que variam conforme o cliente contratante e o tipo de processo.
+
+O processo manual era:
+
+- Repetitivo e sujeito a erros
+- Pouco escalável com o crescimento da carteira de clientes
+- Consumia tempo operacional relevante da equipe
+
+Este projeto surgiu da necessidade real de **otimizar esse fluxo**, e passou a ser utilizado por colaboradores do departamento no dia a dia.
+
+---
+
+## Impacto Operacional
+
+- Redução significativa do tempo gasto na organização de arquivos antes do protocolo
+- Padronização consistente dos documentos por cliente
+- Menor risco de erros operacionais
+- Estrutura preparada para escalar com novos clientes sem reescrever o sistema
 
 ---
 
 ## Como Usar
 
-- Preencha ID Operadora e ID Site
-- Selecione proprietários e tipo de imóvel
-- Anexe os arquivos por item
-- Clique em “Criar ZIP” para baixar
+1. Selecione o **Cliente** (CAW, TBSA, IHS, GLOBAL, CENTENNIAL e HIGHLINE)
+2. Selecione o **Tipo de Imóvel** — as opções aparecem automaticamente conforme o cliente
+3. Preencha **ID Operadora** e **ID Site**
+4. Informe a quantidade de proprietários/sócios
+5. Anexe os arquivos em cada item da tabela
+6. Clique em **"Criar ZIP"** para baixar os arquivos renomeados
 
 ---
 
-## Motivação
+## Funcionalidades Atuai
 
-Este projeto surgiu da necessidade de automatizar a padronização de nomes de arquivos enviados por clientes, seguindo regras rígidas definidas pela empresa.
-
-O processo manual era repetitivo, sujeito a erros e pouco escalável.  
-A solução foi criar uma ferramenta simples, acessível via navegador, eliminando erros humanos e acelerando o fluxo de trabalho.
+- Suporte a múltiplos clientes com conjuntos de tabelas independentes
+- Tabelas de documentos geradas dinamicamente por cliente
+- Suporte às tabelas: PF Urbano, PF Rural, PJ Urbano, PJ Rural e PJ Condomínio (cliente CAW)
+- Seleção do tipo de documento (RG ou CNH)
+- Suporte a 1 ou 2 proprietários com nomenclatura individualizada
+- Geração de arquivo ZIP para download
+- Limpeza automática e manual dos anexos
+- Execução 100% no navegador, sem backend
 
 ---
 
-## Funcionalidades Atuais
+## Decisões Técnicas
 
-- Renomeação automática de arquivos em lote
-- Suporte às tabelas: PF Urbano, PF Rural, PJ Urbano, PJ Rural e PJ Condomínio
-- Seleção do tipo de documento (**RG ou CNH**)
-- Geração de arquivo **ZIP** para download
-- Limpeza automática dos anexos após o download
-- Botão manual para limpar anexos
-- Interface com CSS atualizado e foco em usabilidade
-- Execução 100% no navegador (sem backend)
+- **100% front-end** — sem necessidade de servidor, instalação ou infraestrutura adicional
+- **Estrutura orientada a configuração** — adicionar um novo cliente ou tabela exige apenas declarar um objeto de configuração, sem alterar a lógica principal
+- **Geração de ZIP no navegador** via JSZip — os arquivos nunca saem do computador do usuário
+- **Separação de responsabilidades** — funções pequenas e focadas facilitam manutenção e testes manuais
 
 ---
 
 ## Evolução do Projeto
 
-### v0.1 — Primeira versão funcional
+### v4.0 — Suporte a múltiplos clientes
 
-- Primeira versão operacional do renomeador
-- Ordem de renomeação incorreta
-- Incluía área de candidato (regra antiga)
-- Interface simples
+- Arquitetura refatorada para suportar múltiplos clientes (CAW, TBSA, IHS, GLOBAL, CENTENNIAL e HIGHLINE)
+- Tipos de Imóvel gerados dinamicamente conforme o cliente selecionado
+- Todas as tabelas agora iniciam ocultas corretamente
+- Troca de cliente reseta e oculta tabelas automaticamente
+- Código preparado para receber novos conjuntos de tabelas sem impacto na lógica existente
 
-### v1.0 — Correção da regra de negócio
+### v3.0 — Tabelas completas + ícones (PWA / favicons)
 
-- Correção da ordem correta de renomeação
-- Remoção da área de candidato
-- Suporte limitado a um proprietário
+- Suporte para as tabelas restantes (PJ Urbano, PJ Rural e PJ Condomínio)
+- Adição de favicons e ícones
+- Preparação para uso como PWA
 
-### v2.0 — Versão estável
+### v2.2 — Refatoração para facilitar expansão
 
-- Interface redesenhada com CSS atualizado
-- Suporte a dois proprietários
-- Opção de escolha entre RG e CNH
-- Limpeza automática e manual dos anexos
-- Código mais organizado e melhor experiência de uso
-
-### v2.1 — Adição da tabela de PF Rural
-
-- Suporte para duas tabelas de renomeação (PF Urbano e PF Rural)
+- Redução de duplicação de código
+- Facilidade de manutenção e expansão
 
 ### v2.1.1 — Correções pontuais
 
 - Correção de erro do item em HTML
 - Campo de CND IBAMA aceita 2 proprietários
 
-### v2.2 — Refatoração para facilitar expansão
+### v2.1 — Adição da tabela de PF Rural
 
-- Refatoração motivada pela necessidade de escalar o número de tabelas
-- A abordagem anterior geraria alta duplicação e dificuldade de manutenção
-- As tabelas agora são geradas a partir de uma configuração central
+- Suporte para duas tabelas de renomeação (PF Urbano e PF Rural)
 
----
+### v2.0 — Versão estável
 
-### 3.0 — Tabelas completas + ícones (PWA / favicons)
+- Interface redesenhada com CSS atualizado
+- Suporte a dois proprietários com opção RG ou CNH
+- Limpeza automática e manual dos anexos
 
-- Suporte para as tabelas de renomeação restantes (PJ Urbano, PJ Rural e PF Condomínio)
-- Adição de favicons e ícones (web/iOS)
-- Crédito ao criador do ícone no footer
+### v1.0 — Correção da regra de negócio
 
-### Decisões técnicas
+- Correção da ordem correta de renomeação
+- Remoção da área de candidato
 
-- O projeto foi desenvolvido 100% em front-end para permitir uso imediato, sem necessidade de backend ou infraestrutura adicional
-- A estrutura inicial das tabelas foi refatorada (v2.2) para evitar duplicação de código e facilitar a manutenção
-- As tabelas de renomeação passaram a ser geradas a partir de uma configuração central, permitindo adicionar novas tabelas com baixo impacto no código
-- A geração do ZIP é feita no navegador para preservar a privacidade dos arquivos, que não são enviados a servidores externos
-- A adição de ícones e manifest (v3.0) prepara o projeto para uso como PWA e melhora a experiência em dispositivos móveis
+### v0.1 — Primeira versão funcional
+
+- Primeira versão operacional do renomeador
 
 ---
 
-## Roadmap (Funcionalidades Futuras)
+## Roadmap
 
-- Adicionar novas tabelas agora ficou mais rápido graças à refatoração v2.2
-- Permitir personalização da regra de renomeação  
-  (usuário escolhe ordem e formato do nome final)
-- Converter imagens (`jpg`, `jpeg`, `png`) em PDFs individuais antes da geração do ZIP
-- Avaliar migração parcial para backend no futuro
+- [ ] Suporte a sócios múltiplos em PJ (de 1 até 10)
+- [ ] Nomenclatura personalizada pelo usuário
+- [ ] Conversão de imagens (jpg, png) em PDF antes do ZIP
+- [ ] Preenchimento das tabelas para TBSA, IHS e GLOBAL
 
 ---
 
@@ -121,11 +138,13 @@ A solução foi criar uma ferramenta simples, acessível via navegador, eliminan
 
 ## Observações
 
-Este projeto foi desenvolvido como ferramenta real de uso interno e evoluiu conforme mudanças nas regras de negócio, servindo também como estudo prático de versionamento, organização de código e experiência do usuário.
+Projeto desenvolvido como **ferramenta real de uso interno**, evoluindo conforme mudanças nas regras de negócio e servindo como estudo prático de versionamento, organização de código e melhoria contínua de processos operacionais.
+
+---
 
 ## Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/capa.png" alt="Capa do site" width="47%" style="vertical-align: top; margin-right: 12px;" />
-  <img src="assets/screenshots/tabela.png" alt="Tabela de renomeação" width="45%" style="vertical-align: top;" />
+  <img src="assets/screenshots/capa.png" alt="Capa do site" width="47%" />
+  <img src="assets/screenshots/tabela.png" alt="Tabela de renomeação" width="45%" />
 </p>

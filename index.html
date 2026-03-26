@@ -17,6 +17,22 @@
         <h1>📦 Renomeador e Compactador (ZIP)</h1>
         
         <form id="renomearForm">
+
+            <label for="cliente">Cliente:</label>
+            <select id="cliente" onchange="onClienteChange()" required>
+                <option value="" selected disabled>Selecione o Cliente...</option>
+                <option value="CAW">CAW</option>
+                <option value="TBSA">TBSA</option>
+                <option value="IHS">IHS</option>
+                <option value="GLOBAL">GLOBAL</option>
+                <option value="CENTENNIAL">CENTENNIAL</option>
+                <option value="HIGHLINE">HIGHLINE</option>
+            </select>
+
+            <label for="tipoImovel">Tipo de Imóvel:</label>
+            <select id="tipoImovel" onchange="mostrarCamposEspecificos()" required disabled>
+                <option value="" selected disabled>Selecione primeiro o Cliente...</option>
+            </select>
             
             <label for="idOperadora">ID Operadora:</label>
             <input autocomplete="off" autofocus type="text" id="idOperadora" required placeholder="Ex: TTESEC0002">
@@ -29,16 +45,6 @@
                 <option value="" selected disabled>Selecione...</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
-            </select>
-
-            <label for="tipoImovel">Tipo de Imóvel:</label>
-            <select id="tipoImovel" onchange="mostrarCamposEspecificos()" required>
-                <option value="">Selecione o Tipo...</option>
-                <option value="PF_Urbano">1. PF - Urbano</option>
-                <option value="PF_Rural">2. PF - Rural</option>
-                <option value="PJ_Urbano">3. PJ - Urbano</option>
-                <option value="PJ_Rural">4. PJ - Rural</option>
-                <option value="PJ_Condominio">5. PJ - Condomínio</option>
             </select>
 
             <!-- NOVO: campos de nomes (obrigatórios quando "Sim") -->
