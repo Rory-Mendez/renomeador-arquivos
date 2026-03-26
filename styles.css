@@ -170,7 +170,8 @@ footer{
    SEÇÕES (PF Urbano / Arquivo Geral)
    ========================= */
 
-#documentosPfUrbano, #documentosPfRural{
+#documentosPfUrbano, #documentosPfRural,
+#documentosPjUrbano, #documentosPjRural, #documentosPjCondominio {
   border: 1px solid rgba(168,85,247,0.45);
   padding: 16px;
   background: linear-gradient(180deg, rgba(124,58,237,0.12), rgba(255,255,255,0.06));

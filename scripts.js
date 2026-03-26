@@ -170,66 +170,132 @@ const labelByIndexPJCondominio = {
     "2.17": "Certidão Ações Trabalhistas"
 };
 
-const TABELAS = {
-    PF_Urbano: {
-        key: "PF_Urbano",
-        containerID: "documentosPfUrbano",
-        tbodyID: "pfUrbanoTbody",
-        labels: labelByIndexPFUrbano,
-        // quais índices recebem sufixo _Proprietario quando tem 2
-        indicesComProprietario: new Set(["2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11"]),
-        // quais índices têm toggle (CNH/RG). Em PF é 2.1
-        indicesComToggleDoc: new Set(["2.1"]),
+const CLIENTES = {
+    CAW: {
+        nome: "CAW",
+        tabelas: {
+            PF_Urbano: {
+                key: "PF_Urbano",
+                containerID: "documentosPfUrbano",
+                tbodyID: "pfUrbanoTbody",
+                labels: labelByIndexPFUrbano,
+                // quais índices recebem sufixo _Proprietario quando tem 2
+                indicesComProprietario: new Set(["2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11"]),
+                // quais índices têm toggle (CNH/RG). Em PF é 2.1
+                indicesComToggleDoc: new Set(["2.1"]),
+            },
+            PF_Rural: {
+                key: "PF_Rural",
+                containerID: "documentosPfRural",
+                tbodyID: "pfRuralTbody",
+                labels: labelByIndexPFRural,
+                // quais índices recebem sufixo _Proprietario quando tem 2
+                indicesComProprietario: new Set(["2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11", "2.12"]),
+                // quais índices têm toggle (CNH/RG). Em PF é 2.1
+                indicesComToggleDoc: new Set(["2.1"]),
+            },
+            PJ_Urbano: {
+                key: "PJ_Urbano",
+                containerID: "documentosPjUrbano",
+                tbodyID: "pjUrbanoTbody",
+                labels: labelByIndexPJUrbano,
+                // quais índices recebem sufixo _Proprietario quando tem 2
+                indicesComProprietario: new Set(["2.5", "2.8", "2.9", "2.10", "2.11", "2.14", "2.15", "2.18"]),
+                // quais índices têm toggle (CNH/RG). Em PF é 2.1
+                indicesComToggleDoc: new Set(["2.5"]),
+            },
+            PJ_Rural: {
+                key: "PJ_Rural",
+                containerID: "documentosPjRural",
+                tbodyID: "pjRuralTbody",
+                labels: labelByIndexPJRural,
+                // quais índices recebem sufixo _Proprietario quando tem 2
+                indicesComProprietario: new Set(["2.5", "2.8", "2.9", "2.10", "2.11", "2.14", "2.15", "2.18"]),
+                // quais índices têm toggle (CNH/RG). Em PF é 2.1
+                indicesComToggleDoc: new Set(["2.5"]),
+            },
+            PJ_Condominio: {
+                key: "PJ_Condominio",
+                containerID: "documentosPjCondominio",
+                tbodyID: "pjCondominioTbody",
+                labels: labelByIndexPJCondominio,
+                // quais índices recebem sufixo _Proprietario quando tem 2
+                indicesComProprietario: new Set([]),
+                // quais índices têm toggle (CNH/RG). Em PF é 2.1
+                indicesComToggleDoc: new Set(["2.6"]),
+            }
+        }
     },
-    PF_Rural: {
-        key: "PF_Rural",
-        containerID: "documentosPfRural",
-        tbodyID: "pfRuralTbody",
-        labels: labelByIndexPFRural,
-        // quais índices recebem sufixo _Proprietario quando tem 2
-        indicesComProprietario: new Set(["2.1","2.5","2.6","2.7","2.8","2.9","2.10","2.11", "2.12"]),
-        // quais índices têm toggle (CNH/RG). Em PF é 2.1
-        indicesComToggleDoc: new Set(["2.1"]),
+    TBSA: {
+        nome: "TBSA",
+        tabelas: {} // vazio por enquanto
     },
-    PJ_Urbano: {
-        key: "PJ_Urbano",
-        containerID: "documentosPjUrbano",
-        tbodyID: "pjUrbanoTbody",
-        labels: labelByIndexPJUrbano,
-        // quais índices recebem sufixo _Proprietario quando tem 2
-        indicesComProprietario: new Set(["2.5", "2.8", "2.9", "2.10", "2.11", "2.14", "2.15", "2.18"]),
-        // quais índices têm toggle (CNH/RG). Em PF é 2.1
-        indicesComToggleDoc: new Set(["2.5"]),
+    IHS: {
+        nome: "IHS",
+        tabelas: {} // vazio por enquanto
     },
-    PJ_Rural: {
-        key: "PJ_Rural",
-        containerID: "documentosPjRural",
-        tbodyID: "pjRuralTbody",
-        labels: labelByIndexPJRural,
-        // quais índices recebem sufixo _Proprietario quando tem 2
-        indicesComProprietario: new Set(["2.5", "2.8", "2.9", "2.10", "2.11", "2.14", "2.15", "2.18"]),
-        // quais índices têm toggle (CNH/RG). Em PF é 2.1
-        indicesComToggleDoc: new Set(["2.5"]),
+    GLOBAL: {
+        nome: "GLOBAL",
+        tabelas: {} // vazio por enquanto
     },
-    PJ_Condominio: {
-        key: "PJ_Condominio",
-        containerID: "documentosPjCondominio",
-        tbodyID: "pjCondominioTbody",
-        labels: labelByIndexPJCondominio,
-        // quais índices recebem sufixo _Proprietario quando tem 2
-        indicesComProprietario: new Set([]),
-        // quais índices têm toggle (CNH/RG). Em PF é 2.1
-        indicesComToggleDoc: new Set(["2.6"]),
+    CENTENNIAL: {
+        nome: "CENTENNIAL",
+        tabelas: {} // vazio por enquanto
+    },
+    HIGHLINE: {
+        nome: "HIGHLINE",
+        tabelas: {} // vazio por enquanto
     }
 };
 
+function getClienteAtual() {
+    const clienteId = document.getElementById('cliente')?.value ?? '';
+    return CLIENTES[clienteId] ?? null;
+}
+
 function getTabelaConfig() {
+    const cliente = getClienteAtual();
     const tipo = document.getElementById('tipoImovel')?.value ?? '';
-    return TABELAS[tipo] ?? null;
+    if (!cliente) return null;
+    return cliente.tabelas[tipo] ?? null;
+}
+
+function onClienteChange() {
+    const cliente = getClienteAtual();
+    const selectTipo = document.getElementById('tipoImovel');
+
+    esconderTodasAsTabelasSemExcecao();
+
+    // Limpa as opções antigas
+    selectTipo.innerHTML = '';
+
+    if (!cliente || Object.keys(cliente.tabelas).length === 0) {
+        // Se não tem cliente ou não tem tabelas, desabilita e mostra mensagem
+        selectTipo.disabled = true;
+        selectTipo.innerHTML = '<option value="" selected disabled>Selecione primeiro o Cliente...</option>';
+        return;
+    }
+
+    // Habilita o select e adiciona a opção padrão
+    selectTipo.disabled = false;
+    selectTipo.innerHTML = '<option value="" selected disabled>Selecione o Tipo...</option>';
+
+    // Para cada tabela do cliente, cria uma <option>
+    Object.values(cliente.tabelas).forEach(cfg => {
+        const option = document.createElement('option');
+        option.value = cfg.key;
+        option.textContent = cfg.key.replace(/_/g, ' - ');
+        selectTipo.appendChild(option);
+    });
+
+    // Reseta o tipo selecionado e esconde tabelas
+    mostrarCamposEspecificos();
 }
 
 function esconderTodasAsTabelas() {
-    Object.values(TABELAS).forEach(cfg => {
+    const cliente = getClienteAtual();
+    if (!cliente) return;
+    Object.values(cliente.tabelas).forEach(cfg => {
         const el = document.getElementById(cfg.containerID);
         if (el) el.style.display = 'none';
     });
@@ -252,14 +318,23 @@ function pegarTbodyOriginal(cfg) {
 // UI: mostra/esconde campos
 // ==============================
 
+function esconderTodasAsTabelasSemExcecao() {
+    Object.values(CLIENTES).forEach(cliente => {
+        Object.values(cliente.tabelas).forEach(cfg => {
+            const el = document.getElementById(cfg.containerID);
+            if (el) el.style.display = 'none';
+        });
+    });
+}
+
 function mostrarCamposEspecificos() {
     const tipoImovel = document.getElementById('tipoImovel')?.value ?? '';
     const geralDiv = document.getElementById('arquivoGeralDiv');
     const arquivoGeralInput = document.getElementById('arquivoInputGeral');
     const cfg = getTabelaConfig();
 
-    // Zera tudo
-    esconderTodasAsTabelas();
+    // Esconde TODAS as tabelas de TODOS os clientes sempre
+    esconderTodasAsTabelasSemExcecao();
     geralDiv.style.display = 'none';
     arquivoGeralInput.removeAttribute('required');
 
@@ -272,7 +347,6 @@ function mostrarCamposEspecificos() {
         arquivoGeralInput.setAttribute('required', 'required');
     }
 
-    // Quando muda o tipo, a UI de proprietário pode precisar ser re-aplicada
     atualizarUIProprietario();
 }
 
@@ -654,27 +728,25 @@ function dispararDownload(blob, filename) {
 // ==============================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Salva os tbodys “originais” (sem duplicação) para restaurar quando temProprietario = 1
-    Object.values(TABELAS).forEach(cfg => salvarTbodyOriginal(cfg));
 
+    Object.values(CLIENTES).forEach(cliente => {
+        Object.values(cliente.tabelas).forEach(cfg => salvarTbodyOriginal(cfg));
+    });
+
+    esconderTodasAsTabelasSemExcecao(); // ← adiciona essa linha
     mostrarCamposEspecificos();
     atualizarUIProprietario();
     configurarBotoesDocTipo();
     limparFormulario();
 
-
     const btnLimpar = document.getElementById("limparFormulario");
     if (btnLimpar) btnLimpar.addEventListener("click", limparFormulario);
 
-    // Eventos para mostrar/esconder campos ao mudar seletores
     aplicarListenersInputsArquivo();
-
-    // Eventos para atualizar nomes dos proprietários ao digitar
 
     const input1 = document.getElementById('proprietario1');
     const input2 = document.getElementById('proprietario2');
 
     if (input1) input1.addEventListener('input', atualizarNomesProprietarios);
     if (input2) input2.addEventListener('input', atualizarNomesProprietarios);
-
 });
